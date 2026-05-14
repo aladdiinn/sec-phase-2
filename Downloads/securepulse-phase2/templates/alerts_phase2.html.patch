@@ -1,0 +1,65 @@
+<!-- Add this to alerts.html template in the alert cards section, after the alert info div -->
+<!-- Phase 2: SLA and dedup display -->
+{% if a.case_id %}
+    <div style="display:flex; gap:12px; margin-top:12px; padding-top:12px; border-top:1px solid var(--border-glass)">
+        <div style="flex:1" id="sla-{{ a.id }}">
+            <div style="font-size:11px; color:var(--text-muted); margin-bottom:4px">SLA Status</div>
+            <div style="font-family:var(--mono); font-size:12px; font-weight:600" id="sla-countdown-{{ a.id }}">
+                <span class="badge badge-info">Loading SLA...</span>
+            </div>
+        </div>
+        {% if a.auto_promoted %}
+        <div style="text-align:right">
+            <span class="badge" style="background:rgba(16,185,129,0.1); color:var(--accent-green); border:1px solid rgba(16,185,129,0.3); font-size:10px">⚡ Auto-escalated by SOAR</span>
+        </div>
+        {% endif %}
+    </div>
+    <script>
+        // Phase 2: Real SLA countdown
+        (async function() {
+            try {
+                const resp = await apiFetch('/api/cases/{{ a.case_id }}/sla-status');
+                const el = document.getElementById('sla-countdown-{{ a.id }}');
+                if (el) {
+                    if (resp.sla_status === 'breached') {
+                        el.innerHTML = '<span class="badge badge-critical">SLA BREACHED ⚠️</span>';
+                    } else if (resp.sla_status === 'critical') {
+                        el.innerHTML = `<span class="badge badge-critical">${resp.remaining_str} remaining</span>`;
+                    } else if (resp.sla_status === 'warning') {
+                        el.innerHTML = `<span class="badge badge-warning">${resp.remaining_str} remaining</span>`;
+                    } else {
+                        el.innerHTML = `<span class="badge badge-info">${resp.remaining_str} remaining</span>`;
+                    }
+                }
+            } catch (e) {
+                console.error('SLA fetch error', e);
+            }
+        })();
+    </script>
+{% endif %}
+
+<!-- Tune false positive -->
+<div style="display:flex; gap:10px; margin-top:12px">
+    <button class="btn btn-glass" style="font-size:11px; padding:6px 10px" onclick="tuneAlertFP({{ a.id }}, true)">
+        <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Mark as False Positive
+    </button>
+    <button class="btn btn-glass" style="font-size:11px; padding:6px 10px" onclick="promoteToCase({{ a.id }})">
+        Escalate to Case
+    </button>
+</div>
+
+<script>
+async function tuneAlertFP(alertId, suppress) {
+    try {
+        const resp = await apiFetch(`/api/alerts/${alertId}/tune-fp`, {
+            method: 'POST',
+            body: JSON.stringify({ suppress: suppress })
+        });
+        alert('Alert tuned. Future similar alerts will be ' + (suppress ? 'suppressed' : 'shown'));
+        loadAlerts();
+    } catch (e) {
+        alert('Error tuning alert: ' + e.message);
+    }
+}
+</script>
