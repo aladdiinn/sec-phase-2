@@ -12,7 +12,7 @@
 # ── Worker class: gthread for Python 3.14 + Flask-SocketIO threading mode ──
 worker_class = "gthread"
 workers = 1        # Must be 1 for SocketIO session consistency
-threads = 8        # 8 threads handle concurrent requests + WebSocket connections
+threads = 100      # Increased to 100 to handle concurrent HTTP requests + multiple long-polling WebSocket connections without starvation
 
 # ── Bind ───────────────────────────────────────────────────────────
 bind = "0.0.0.0:5000"
@@ -24,8 +24,12 @@ keepalive = 75
 graceful_timeout = 30
 
 # ── Logging ────────────────────────────────────────────────────────
-accesslog = "/home/ubuntu/sec-app/logs/access.log"
-errorlog  = "/home/ubuntu/sec-app/logs/error.log"
+import os
+_log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
+os.makedirs(_log_dir, exist_ok=True)
+
+accesslog = os.path.join(_log_dir, "access.log")
+errorlog  = os.path.join(_log_dir, "error.log")
 loglevel  = "info"
 
 # ── Misc ───────────────────────────────────────────────────────────

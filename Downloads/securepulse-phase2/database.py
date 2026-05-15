@@ -35,6 +35,14 @@ def init_db(app: Flask):
 
         # ── 2. Per-column migrations ────────────────────────────────────────────
         s = db.session   # shorthand
+        
+        # Pre-emptively set lock timeout to prevent Gunicorn from hanging forever on startup
+        # if another transaction holds an AccessExclusive lock.
+        try:
+            s.execute(text("SET lock_timeout = '3s'"))
+            s.commit()
+        except Exception:
+            s.rollback()
 
         # ── users ──────────────────────────────────────────────────────────────
         _safe_alter(s, "ALTER TABLE users ADD COLUMN IF NOT EXISTS username VARCHAR(128) UNIQUE")

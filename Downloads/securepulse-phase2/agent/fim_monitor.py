@@ -36,7 +36,17 @@ else:
         "/sbin",
         "/usr/bin",
         "/usr/sbin",
+        "/tmp",
     ]
+    # Dynamically watch all user home directories
+    if os.path.exists("/home"):
+        try:
+            for entry in os.listdir("/home"):
+                full_path = os.path.join("/home", entry)
+                if os.path.isdir(full_path):
+                    FIM_TARGETS.append(full_path)
+        except Exception:
+            pass
 
 POLL_INTERVAL = 15  # seconds
 
@@ -68,11 +78,11 @@ def _get_file_metadata(path: str) -> dict:
 
 
 def _get_mode_string(st_mode):
-    """Platform-independent mode string."""
+    """Platform-independent mode string (retaining SUID bit)."""
     if platform.system() == "Windows":
         # Windows doesn't use octal permissions the same way
         return "win_attr_" + str(st_mode)
-    return oct(st_mode & 0o777)
+    return oct(st_mode & 0o7777)
 
 
 def _collect_fim_snapshot(targets: list[str]) -> dict[str, dict]:
@@ -149,6 +159,18 @@ class FIMMonitor(threading.Thread):
             desc += f" ({', '.join(changes)})"
             
         severity = "warning"
+        
+        # ── Auto-escalate for SUID / SGID Creation ──
+        if changes and "permissions" in changes:
+            try:
+                old_mode = int(old.get("mode", "0"), 8) if old else 0
+                new_mode = int(new.get("mode", "0"), 8) if new else 0
+                if (new_mode & 0o4000) and not (old_mode & 0o4000):
+                    desc += " [CRITICAL: SUID BIT PRIVILEGE ESCALATION]"
+                    severity = "critical"
+            except Exception:
+                pass
+
         # Escalate for highly sensitive files
         if platform.system() == "Windows":
             CRITICAL_FILES = ["hosts", "SAM", "SYSTEM"]

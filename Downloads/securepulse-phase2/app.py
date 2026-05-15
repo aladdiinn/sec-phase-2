@@ -51,7 +51,7 @@ from dotenv import load_dotenv
 
 from database import db, init_db
 from models import (User, Server, Event, Alert, AuditLog, AlertRule, Case, ThreatIndicator, Playbook,
-                     CaseComment, Notification, FirewallConfig, BlockedIP, IdentityProviderConfig,
+                     CaseComment, Notification, NotificationRoute, FirewallConfig, BlockedIP, IdentityProviderConfig,
                      JiraConfig, CaseTicket, DRTestLog, Project, ProjectEndpoint,
                      ROLE_SUPERUSER, ROLE_ADMIN, ROLE_NORMAL)
 from sqlalchemy import func # type: ignore
@@ -528,7 +528,7 @@ def auth_login():
     if not username or not password:
         return jsonify({"error": "Username and password required"}), 400
 
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter((User.username == username) | (User.email == username)).first()
     if not user or not check_password_hash(user.hashed_password, password):
         return jsonify({"error": "Invalid username or password"}), 401
 
@@ -726,6 +726,13 @@ systemctl daemon-reload
 systemctl enable securepulse-agent
 systemctl restart securepulse-agent
 
+info "🚀 Dispatching one-time automated verification alert..."
+AGENT_TOKEN=$(grep "agent_token" "/etc/securepulse-agent.conf" | cut -d'=' -f2 | tr -d '[:space:]')
+curl -s -o /dev/null -X POST "$BACKEND_URL/api/events" \
+  -H "Content-Type: application/json" \
+  -H "X-Agent-Token: $AGENT_TOKEN" \
+  -d '{{"event_type": "file_change", "description": "INITIALIZATION: Dynamic registration verified Gmail notification routing.", "severity": "critical"}}'
+
 info "✅ SecurePulse Agent installed and running!"
 """
     return script.replace("\r\n", "\n"), 200, {"Content-Type": "text/plain"}
@@ -743,7 +750,7 @@ def setup_agent_files():
     for filename in os.listdir(agent_dir):
         if filename.endswith(".py"):
             path = os.path.join(agent_dir, filename)
-            with open(path, "r") as f:
+            with open(path, "r", encoding="utf-8") as f:
                 files_data[filename] = f.read()
                 
     return jsonify(files_data)
@@ -769,7 +776,7 @@ class RuleManager:
             if filename.endswith(".yaml") or filename.endswith(".yml"):
                 path = os.path.join(self.rules_dir, filename)
                 try:
-                    with open(path, "r") as f:
+                    with open(path, "r", encoding="utf-8", errors="replace") as f:
                         data = yaml.safe_load(f)
                         if data and "rules" in data:
                             self.rules.extend(data["rules"])
@@ -2280,11 +2287,11 @@ def create_rule():
     try:
         yaml_data = {"rules": []}
         if os.path.exists(rules_path):
-            with open(rules_path, "r") as f:
+            with open(rules_path, "r", encoding="utf-8", errors="replace") as f:
                 yaml_data = yaml.safe_load(f) or {"rules": []}
         
         yaml_data["rules"].append(new_rule)
-        with open(rules_path, "w") as f:
+        with open(rules_path, "w", encoding="utf-8") as f:
             yaml.dump(yaml_data, f, default_flow_style=False, allow_unicode=True)
             
         # Sync with database for playbook linking
@@ -2312,14 +2319,14 @@ def delete_rule(rule_id):
     """Delete a rule by index from default_rules.yaml."""
     rules_path = os.path.join(base_dir, "rules", "default_rules.yaml")
     try:
-        with open(rules_path, "r") as f:
+        with open(rules_path, "r", encoding="utf-8", errors="replace") as f:
             yaml_data = yaml.safe_load(f) or {"rules": []}
         rules = yaml_data.get("rules", [])
         if rule_id < 0 or rule_id >= len(rules):
             return jsonify({"error": "Rule not found"}), 404
         deleted = rules.pop(rule_id)
         yaml_data["rules"] = rules
-        with open(rules_path, "w") as f:
+        with open(rules_path, "w", encoding="utf-8") as f:
             yaml.dump(yaml_data, f, default_flow_style=False, allow_unicode=True)
             
         # Also delete from DB if exists
@@ -3087,12 +3094,21 @@ def manage_notification_routes():
 
 def dispatch_alert_notification(alert):
     """
-    Intelligent routing logic to determine recipient email based on server metadata.
+    Production alert routing and dispatch logic via SMTP.
+    Includes intelligent routing, alert suppression, and deduplication.
     """
     server = alert.server
+    
+    # A. Suppress if server is in maintenance
     if server and getattr(server, 'is_maintenance', False):
         logger.info(f"SUPPRESSED: Alert '{alert.title}' notification suppressed (Server in Maintenance)")
         return None
+
+    # B. Alert Deduplication hook (Phase 2 - prevent spam)
+    if server and should_suppress_alert(alert.server_id, alert.alert_type, alert.title):
+        logger.info(f"SUPPRESSED: Duplicate alert '{alert.title}' within 5-min deduplication window. Email skipped.")
+        return None
+        
     recipient = None
     
     # 1. Match by Role (e.g. standby -> DB Team)
@@ -3110,11 +3126,97 @@ def dispatch_alert_notification(alert):
         route = NotificationRoute.query.filter_by(match_type="default").first()
         recipient = route.recipient_email if route else "soc-manager@securepulse.local"
 
-    # Simulation of Email Dispatch
-    logger.info(f"AUTO-DISPATCH: Alert '{alert.title}' routed to {recipient}")
-    # Here you would add: mail.send_message(subject=alert.title, recipients=[recipient], body=alert.message)
+    # C. Dispatch via SMTP
+    logger.info(f"AUTO-DISPATCH: Dispatching SMTP alert for '{alert.title}' to {recipient}")
     
+    subject = f"[{str(alert.severity).upper()}] SecurePulse Incident - {alert.title}"
+    base_url = os.getenv("BASE_URL", "http://localhost:5000")
+    
+    html_body = f"""
+    <html>
+    <body style="font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #060f1e; color: #e2e8f0; padding: 20px; margin: 0;">
+        <div style="max-width: 600px; margin: auto; border: 1px solid #1e293b; border-radius: 8px; overflow: hidden; background: #0f172a;">
+            <div style="background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%); padding: 25px; text-align: center;">
+                <h1 style="margin: 0; color: #060f1e; font-size: 22px; letter-spacing: 1px; font-weight: bold; text-transform: uppercase;">SecurePulse SOC Alert</h1>
+            </div>
+            <div style="padding: 30px;">
+                <div style="margin-bottom: 20px;">
+                    <span style="font-size: 11px; font-weight: bold; padding: 5px 12px; border-radius: 4px; background: {'#dc2626' if str(alert.severity).lower() == 'critical' else '#d97706'}; color: #ffffff; text-transform: uppercase; font-family: monospace;">{alert.severity} SEVERITY</span>
+                    <span style="margin-left: 10px; font-size: 12px; color: #94a3b8; font-family: monospace;">ID: #{alert.id}</span>
+                </div>
+                <h2 style="color: #ffffff; font-size: 18px; margin-top: 0; margin-bottom: 12px;">{alert.title}</h2>
+                <p style="color: #cbd5e1; line-height: 1.6; font-size: 14px; margin-bottom: 25px;">{alert.message}</p>
+                
+                <table style="width: 100%; margin-bottom: 30px; border-collapse: collapse; background: #1e293b; border-radius: 4px; overflow: hidden;">
+                    <tr style="border-bottom: 1px solid #334155;">
+                        <td style="padding: 12px; font-size: 12px; color: #94a3b8; font-weight: bold; width: 35%;">Hostname</td>
+                        <td style="padding: 12px; font-size: 13px; color: #ffffff; font-family: monospace;">{server.hostname if server else 'Unregistered System'}</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #334155;">
+                        <td style="padding: 12px; font-size: 12px; color: #94a3b8; font-weight: bold;">IP Address</td>
+                        <td style="padding: 12px; font-size: 13px; color: #ffffff; font-family: monospace;">{getattr(server, 'ip_address', 'N/A') or 'N/A'}</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #334155;">
+                        <td style="padding: 12px; font-size: 12px; color: #94a3b8; font-weight: bold;">Alert Type</td>
+                        <td style="padding: 12px; font-size: 13px; color: #e2e8f0; text-transform: capitalize;">{str(alert.alert_type).replace('_', ' ')}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; font-size: 12px; color: #94a3b8; font-weight: bold;">Incident Score</td>
+                        <td style="padding: 12px; font-size: 13px; color: #f43f5e; font-weight: bold; font-family: monospace;">{getattr(alert, 'score', 0)} / 100</td>
+                    </tr>
+                </table>
+                
+                <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
+                    <a href="{base_url}/alerts" style="display: inline-block; background: #3b82f6; color: #ffffff; font-weight: bold; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-size: 14px;">Launch Investigation Console</a>
+                </div>
+            </div>
+            <div style="background: #020617; padding: 15px; text-align: center; font-size: 11px; color: #64748b; border-top: 1px solid #1e293b;">
+                This is an automated operational intelligence notice.<br>
+                Suppression: Identical alerts throttled for 5 minutes.
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+    # Dispatch asynchronously or synchronous inline helper
+    send_smtp_email_direct(recipient, subject, html_body)
+
     return recipient
+
+def send_smtp_email_direct(recipient, subject, html_content):
+    """Universal smtplib dispatch helper for Gmail App Password connectivity."""
+    import smtplib
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
+    
+    smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+    smtp_port = int(os.getenv("SMTP_PORT", "587"))
+    smtp_user = os.getenv("SMTP_USERNAME", "mannancr72@gmail.com")
+    smtp_pass = os.getenv("SMTP_PASSWORD", "").strip()
+    
+    if not smtp_pass:
+        logger.warning("SMTP DISPATCH SKIPPED: 'SMTP_PASSWORD' is empty in .env file.")
+        return False
+        
+    try:
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = subject
+        msg['From'] = f"SecurePulse SOC <{smtp_user}>"
+        msg['To'] = recipient
+        
+        msg.attach(MIMEText(html_content, 'html'))
+        
+        with smtplib.SMTP(smtp_server, smtp_port, timeout=10) as server:
+            server.starttls()
+            server.login(smtp_user, smtp_pass)
+            server.send_message(msg)
+            
+        logger.info(f"SMTP SUCCESS: Dispatched security email successfully to {recipient}")
+        return True
+    except Exception as e:
+        logger.error(f"SMTP ERROR: Handshake / dispatch failed for {recipient}: {e}")
+        return False
 
 @app.route("/api/cases/<int:case_id>/send-alert", methods=["POST"])
 @jwt_required
@@ -3287,27 +3389,27 @@ def seed_default_rules():
         {"name": "Netcat Listener Detected", "event_type": "new_process", "severity": "critical",
          "condition": {"field": "description", "operator": "regex", "value": r"nc\s+(-l|-lp|-lvp)"},
          "mitre_tactic": "Execution", "mitre_technique": "T1059",
-         "message": "Netcat listener started — possible C2 channel", "is_active": True},
+         "message": "Netcat listener started - possible C2 channel", "is_active": True},
         {"name": "Passwd File Modified", "event_type": "file_change", "severity": "critical",
          "condition": {"field": "description", "operator": "contains", "value": "/etc/passwd"},
          "mitre_tactic": "Persistence", "mitre_technique": "T1136",
-         "message": "/etc/passwd file was modified — possible user account manipulation", "is_active": True},
+         "message": "/etc/passwd file was modified - possible user account manipulation", "is_active": True},
         {"name": "SSH Authorized Keys Modified", "event_type": "file_change", "severity": "critical",
          "condition": {"field": "description", "operator": "contains", "value": "authorized_keys"},
          "mitre_tactic": "Persistence", "mitre_technique": "T1098.004",
-         "message": "SSH authorized_keys file modified — possible backdoor installation", "is_active": True},
+         "message": "SSH authorized_keys file modified - possible backdoor installation", "is_active": True},
         {"name": "Crontab Modification", "event_type": "file_change", "severity": "critical",
          "condition": {"field": "description", "operator": "contains", "value": "/etc/cron"},
          "mitre_tactic": "Persistence", "mitre_technique": "T1053.005",
-         "message": "Crontab or cron directory modified — possible persistence mechanism", "is_active": True},
+         "message": "Crontab or cron directory modified - possible persistence mechanism", "is_active": True},
         {"name": "SUID Binary Created", "event_type": "new_process", "severity": "critical",
          "condition": {"field": "description", "operator": "contains", "value": "chmod +s"},
          "mitre_tactic": "Privilege Escalation", "mitre_technique": "T1548.001",
-         "message": "SUID bit set on binary — privilege escalation risk", "is_active": True},
+         "message": "SUID bit set on binary - privilege escalation risk", "is_active": True},
         {"name": "Unauthorized Sudo Usage", "event_type": "new_process", "severity": "warning",
          "condition": {"field": "description", "operator": "contains", "value": "sudo"},
          "mitre_tactic": "Privilege Escalation", "mitre_technique": "T1548.003",
-         "message": "Sudo command executed — verify if authorized", "is_active": True},
+         "message": "Sudo command executed - verify if authorized", "is_active": True},
         {"name": "Failed Brute Force Pattern", "event_type": "failed_login", "severity": "warning",
          "condition": {"field": "description", "operator": "contains", "value": "Failed pwd"},
          "mitre_tactic": "Credential Access", "mitre_technique": "T1110",
@@ -3319,11 +3421,11 @@ def seed_default_rules():
         {"name": "Large File Transfer", "event_type": "network_event", "severity": "warning",
          "condition": {"field": "description", "operator": "contains", "value": "large_upload"},
          "mitre_tactic": "Exfiltration", "mitre_technique": "T1048",
-         "message": "Large outbound file transfer detected — possible data exfiltration", "is_active": True},
+         "message": "Large outbound file transfer detected - possible data exfiltration", "is_active": True},
         {"name": "New User Account Created", "event_type": "new_process", "severity": "warning",
          "condition": {"field": "description", "operator": "contains", "value": "useradd"},
          "mitre_tactic": "Persistence", "mitre_technique": "T1136.001",
-         "message": "New OS user account created — verify if authorized", "is_active": True},
+         "message": "New OS user account created - verify if authorized", "is_active": True},
         {"name": "Package Manager Unusual Usage", "event_type": "new_process", "severity": "warning",
          "condition": {"field": "description", "operator": "contains", "value": "apt-get install"},
          "mitre_tactic": "Execution", "mitre_technique": "T1072",
@@ -3331,13 +3433,13 @@ def seed_default_rules():
         {"name": "Service Stopped Unexpectedly", "event_type": "service_event", "severity": "warning",
          "condition": {"field": "description", "operator": "contains", "value": "service_stopped"},
          "mitre_tactic": "Impact", "mitre_technique": "T1489",
-         "message": "Critical service stopped unexpectedly — possible impact or sabotage", "is_active": True},
+         "message": "Critical service stopped unexpectedly - possible impact or sabotage", "is_active": True},
     ]
 
     try:
         yaml_data = {"rules": []}
         if os.path.exists(rules_path):
-            with open(rules_path, "r") as f:
+            with open(rules_path, "r", encoding="utf-8", errors="replace") as f:
                 yaml_data = _yaml.safe_load(f) or {"rules": []}
 
         existing_names = {r.get("name") for r in yaml_data.get("rules", [])}
@@ -3358,7 +3460,7 @@ def seed_default_rules():
                     pass
 
         if added > 0:
-            with open(rules_path, "w") as f:
+            with open(rules_path, "w", encoding="utf-8") as f:
                 _yaml.dump(yaml_data, f, default_flow_style=False, allow_unicode=True)
             db.session.commit()
             logger.info(f"Seeded {added} default detection rules")

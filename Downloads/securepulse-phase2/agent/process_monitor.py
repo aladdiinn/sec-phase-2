@@ -82,10 +82,11 @@ class ProcessMonitor(threading.Thread):
                 username = proc["username"]
 
                 logger.info(f"New process: PID={pid} name={name} user={username}")
+                desc_detail = cmdline if cmdline.strip() else name
                 send_event(
                     self.cfg,
                     event_type="new_process",
-                    description=f"New process detected: {name} (PID {pid}) by {username}",
+                    description=f"New process detected: {desc_detail} (PID {pid}) by {username}",
                     severity="info",
                     source="process_monitor",
                     raw_data={

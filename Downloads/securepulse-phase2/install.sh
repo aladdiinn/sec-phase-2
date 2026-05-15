@@ -159,6 +159,15 @@ else
   warn "Service status: $STATUS. Check: journalctl -u $SERVICE_NAME -f"
 fi
 
+# ── 8. One-Time Verification Test ──────────────────────────────────
+info "🚀 Dispatching one-time dashboard & email verification alert..."
+AGENT_TOKEN=$(grep "agent_token" "$CONFIG_FILE" | awk -F'=' '{print $2}' | tr -d '[:space:]')
+curl -s -o /dev/null -X POST "$BACKEND_URL/api/events" \
+  -H "Content-Type: application/json" \
+  -H "X-Agent-Token: $AGENT_TOKEN" \
+  -d "{\"event_type\": \"file_change\", \"description\": \"INITIALIZATION: SecurePulse verified automated Gmail alert configuration for hostname: $HOSTNAME\", \"severity\": \"critical\"}"
+
+
 info "============================================"
 info " SecurePulse Agent installed successfully!"
 info " Server ID    : $SERVER_ID"
