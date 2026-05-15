@@ -38,15 +38,15 @@
             <div>
                 <label style="display:block; font-family:var(--mono); font-size:9px; letter-spacing:2px; color:var(--text2); margin-bottom:5px; text-transform:uppercase">Heartbeat Timeout</label>
                 <div style="display:flex; align-items:center; gap:10px">
-                    <input type="number" id="heartbeat-timeout" value="120" min="30" max="600" style="width:90px" {% if session.get('user_role') == 'normal' %}disabled{% endif %}>
+                    <input type="number" id="heartbeat-timeout" value="120" min="30" max="600" style="width:90px" {% if g.user and g.user.role == 'normal' %}disabled{% endif %}>
                     <span style="font-family:var(--mono); font-size:10px; color:var(--text2)">seconds</span>
-                    {% if session.get('user_role') != 'normal' %}
+                    {% if g.user and g.user.role != 'normal' %}
                     <button class="btn btn-glass" style="padding:5px 12px; font-size:11px" onclick="saveHeartbeat()">Save</button>
                     {% endif %}
                 </div>
                 <p style="font-family:var(--mono); font-size:9px; color:var(--text3); margin-top:5px; letter-spacing:1px">Servers not seen within this window are marked Offline.</p>
             </div>
-            {% if session.get('user_role') != 'normal' %}
+            {% if g.user and g.user.role != 'normal' %}
             <div style="height:1px; background:var(--border)"></div>
             <button class="btn btn-glass" style="border-color:var(--red); color:var(--red); width:100%" onclick="revokeTokens()">
                 <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2" style="margin-right:6px"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
@@ -93,7 +93,7 @@
         </div>
     </div>
 
-    {% if session.get('user_role') != 'normal' %}
+    {% if g.user and g.user.role != 'normal' %}
     <!-- ── Notification Routing ── -->
     <div class="card" style="grid-column: span 2">
         <div class="card-header">

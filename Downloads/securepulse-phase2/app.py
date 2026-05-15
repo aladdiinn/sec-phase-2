@@ -262,6 +262,8 @@ def load_logged_in_user():
         try:
             payload = decode_jwt(token)
             g.user = User.query.get(int(payload["sub"]))
+            if g.user:
+                session["user_role"] = g.user.role
         except:
             g.user = None
     else:
@@ -827,7 +829,7 @@ class RuleManager:
 
 # Global Rule Manager instance
 # It will load rules lazily or explicitly after DB init to avoid schema errors
-rule_manager = RuleManager()
+rule_manager = RuleManager(rules_dir=os.path.join(base_dir, "rules"))
 
 
 def score_alert(severity: str, mitre_tactic: str = None, is_brute_force: bool = False) -> int:
@@ -860,6 +862,7 @@ class PlaybookRunner:
             return False
         
         try:
+            results = []
             actions = json.loads(playbook.actions) if isinstance(playbook.actions, str) else playbook.actions
             for action in actions:
                 action_type = action.get("type")

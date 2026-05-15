@@ -12,7 +12,7 @@
       (function() {
         var t = localStorage.getItem('sp_theme');
         if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
-        window.USER_ROLE = "{{ session.get('user_role', 'normal') }}";
+        window.USER_ROLE = "{{ g.user.role if g.user else 'normal' }}";
       })();
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -79,7 +79,7 @@
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                     REPORTS
                 </a>
-                {% if session.get('user_role') == 'superuser' %}
+                {% if g.user and g.user.role == 'superuser' %}
                 <a href="/user-management" class="nav-item {% if active == 'user-management' %}active{% endif %}">
                     <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     USER MGMT
@@ -136,7 +136,7 @@
                     </div>
 
                     <div id="sb-clock">--:--:--</div>
-                    <div class="sb-logo" style="width:26px; height:26px; border-radius:50%; font-family:var(--orb); font-size:10px; color:var(--cyan); display:flex; align-items:center; justify-content:center; background:rgba(0,200,255,0.1); border:1px solid var(--cyan)">{{ session.get('user_role', 'N')[0]|upper }}</div>
+                    <div class="sb-logo" style="width:26px; height:26px; border-radius:50%; font-family:var(--orb); font-size:10px; color:var(--cyan); display:flex; align-items:center; justify-content:center; background:rgba(0,200,255,0.1); border:1px solid var(--cyan)">{{ (g.user.role if g.user else 'N')[0]|upper }}</div>
                 </div>
             </header>
     {% endif %}

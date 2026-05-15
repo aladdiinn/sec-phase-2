@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="fade-in">
-    {% if session.get('user_role') != 'normal' %}
+    {% if g.user and g.user.role != 'normal' %}
     <div style="display:flex; justify-content:flex-end; margin-bottom:20px">
         <button class="btn btn-primary" onclick="openCreateProject()">+ CREATE NEW PROJECT</button>
     </div>

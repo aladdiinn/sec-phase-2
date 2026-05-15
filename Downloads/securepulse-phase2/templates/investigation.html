@@ -48,7 +48,7 @@
     <!-- ── RIGHT SIDE: ACTIONS & COLLABORATION ── -->
     <div class="side-pane">
         <!-- Response Actions -->
-        {% if session.get('user_role') != 'normal' %}
+        {% if g.user and g.user.role != 'normal' %}
         <div class="card">
             <h3 class="card-title">RESPONSE ACTIONS</h3>
             <div class="action-grid" style="margin-top:15px">
