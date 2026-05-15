@@ -52,7 +52,7 @@
 
     async function stopMaintenance(id) {
         try {
-            await apiFetch(\`/api/servers/\${id}\`, {
+            await apiFetch(`/api/servers/${id}`, {
                 method: 'PATCH',
                 body: JSON.stringify({ is_maintenance: false, maintenance_hours: 0 })
             });

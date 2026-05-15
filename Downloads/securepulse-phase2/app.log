@@ -434,3 +434,510 @@
 2026-05-15 04:40:19,724 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 04:40:19] "GET /api/alerts?is_resolved=false&limit=5 HTTP/1.1" 200 -
 2026-05-15 04:40:19,739 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 04:40:19] "GET /api/dashboard/brute-force HTTP/1.1" 200 -
 2026-05-15 04:40:19,753 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 04:40:19] "GET /api/servers/maintenance HTTP/1.1" 200 -
+2026-05-15 22:07:16,661 [INFO] securepulse: Loaded 17 rules from default_rules.yaml
+2026-05-15 22:07:16,691 [INFO] securepulse: Synced updated detection rules to YAML
+2026-05-15 22:07:16,740 [INFO] securepulse: Loaded 17 rules from default_rules.yaml
+2026-05-15 22:07:16,753 [INFO] securepulse: Starting SecurePulse on port 5001 (debug=True)
+2026-05-15 22:07:16,871 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.0.112:5001
+2026-05-15 22:07:16,871 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2026-05-15 22:07:16,872 [INFO] werkzeug:  * Restarting with stat
+2026-05-15 22:07:18,470 [INFO] securepulse: Loaded 17 rules from default_rules.yaml
+2026-05-15 22:07:18,561 [INFO] securepulse: Loaded 17 rules from default_rules.yaml
+2026-05-15 22:07:18,570 [INFO] securepulse: Starting SecurePulse on port 5001 (debug=True)
+2026-05-15 22:07:18,577 [WARNING] werkzeug:  * Debugger is active!
+2026-05-15 22:07:18,580 [INFO] werkzeug:  * Debugger PIN: 818-874-423
+2026-05-15 22:07:34,965 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:07:34] "[32mGET / HTTP/1.1[0m" 302 -
+2026-05-15 22:07:35,012 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:07:35] "GET /login HTTP/1.1" 200 -
+2026-05-15 22:07:35,103 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:07:35] "GET /static/css/main.css HTTP/1.1" 200 -
+2026-05-15 22:07:35,127 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:07:35] "GET /static/js/auth.js HTTP/1.1" 200 -
+2026-05-15 22:08:25,671 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:25] "POST /auth/login HTTP/1.1" 200 -
+2026-05-15 22:08:28,695 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:28] "GET /dashboard?_cb=1778863108585 HTTP/1.1" 200 -
+2026-05-15 22:08:28,723 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:28] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:08:28,725 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:28] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:08:28,807 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:28] "GET /static/js/realtime.js HTTP/1.1" 200 -
+2026-05-15 22:08:28,868 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:28] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:08:28,920 [INFO] securepulse: WebSocket client connected: Tnq4pXHC9uLaXKrCAAAB
+2026-05-15 22:08:28,973 [ERROR] securepulse: GeoIP error for 203.0.113.5: name 'requests' is not defined
+2026-05-15 22:08:28,982 [ERROR] securepulse: GeoIP error for 198.51.100.42: name 'requests' is not defined
+2026-05-15 22:08:28,983 [ERROR] securepulse: GeoIP error for 192.168.1.50: name 'requests' is not defined
+2026-05-15 22:08:28,988 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:28] "GET /api/servers/stats HTTP/1.1" 200 -
+2026-05-15 22:08:28,988 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:28] "GET /api/dashboard/geoip HTTP/1.1" 200 -
+2026-05-15 22:08:29,044 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:29] "GET /api/events?limit=100 HTTP/1.1" 200 -
+2026-05-15 22:08:29,089 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:29] "GET /api/alerts?is_resolved=false&limit=5 HTTP/1.1" 200 -
+2026-05-15 22:08:29,115 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:29] "GET /api/dashboard/brute-force HTTP/1.1" 200 -
+2026-05-15 22:08:29,158 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:29] "GET /api/servers/maintenance HTTP/1.1" 200 -
+2026-05-15 22:08:32,547 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:32] "GET /assets HTTP/1.1" 200 -
+2026-05-15 22:08:32,569 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:32] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:08:32,573 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:32] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:08:32,574 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:32] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:08:32,605 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:32] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:08:32,612 [INFO] securepulse: WebSocket client disconnected: Tnq4pXHC9uLaXKrCAAAB
+2026-05-15 22:08:32,626 [INFO] securepulse: WebSocket client connected: U7TZJ0WBh4-Y0xxqAAAD
+2026-05-15 22:08:32,657 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:32] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:08:40,493 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:40] "GET /servers/46 HTTP/1.1" 200 -
+2026-05-15 22:08:40,513 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:40] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:08:40,516 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:40] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:08:40,517 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:40] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:08:40,536 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:40] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:08:40,543 [INFO] securepulse: WebSocket client disconnected: U7TZJ0WBh4-Y0xxqAAAD
+2026-05-15 22:08:40,554 [INFO] securepulse: WebSocket client connected: lrbrRoe7woOPk-v-AAAF
+2026-05-15 22:08:49,571 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:49] "GET /assets HTTP/1.1" 200 -
+2026-05-15 22:08:49,594 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:49] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:08:49,595 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:49] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:08:49,596 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:49] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:08:49,601 [INFO] securepulse: WebSocket client disconnected: lrbrRoe7woOPk-v-AAAF
+2026-05-15 22:08:49,622 [INFO] securepulse: WebSocket client connected: 5QmBELD237RTcpI1AAAH
+2026-05-15 22:08:49,624 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:49] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:08:49,642 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:49] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:08:59,110 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:59] "GET /servers/7 HTTP/1.1" 200 -
+2026-05-15 22:08:59,135 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:59] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:08:59,137 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:59] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:08:59,138 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:59] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:08:59,143 [INFO] securepulse: WebSocket client disconnected: 5QmBELD237RTcpI1AAAH
+2026-05-15 22:08:59,164 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:08:59] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:08:59,169 [INFO] securepulse: WebSocket client connected: 329TNZZzeBHTpeRhAAAJ
+2026-05-15 22:09:29,662 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:09:29] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:09:59,654 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:09:59] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:10:29,651 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:10:29] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:10:59,655 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:10:59] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:11:29,651 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:11:29] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:11:34,709 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:11:34] "GET /login HTTP/1.1" 200 -
+2026-05-15 22:11:34,744 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:11:34] "GET /static/css/main.css HTTP/1.1" 200 -
+2026-05-15 22:11:34,962 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:11:34] "GET /static/js/auth.js HTTP/1.1" 200 -
+2026-05-15 22:11:59,685 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:11:59] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:12:11,618 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:11] "[31m[1mPOST /auth/login HTTP/1.1[0m" 401 -
+2026-05-15 22:12:25,962 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:25] "POST /auth/login HTTP/1.1" 200 -
+2026-05-15 22:12:29,257 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:29] "GET /dashboard?_cb=1778863348877 HTTP/1.1" 200 -
+2026-05-15 22:12:29,307 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:29] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:12:29,489 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:29] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:12:29,627 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:29] "GET /static/js/realtime.js HTTP/1.1" 200 -
+2026-05-15 22:12:29,967 [INFO] securepulse: WebSocket client connected: MzmW5LGKJjbVeaqEAAAL
+2026-05-15 22:12:29,987 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:29] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:12:30,044 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:30] "GET /api/servers/stats HTTP/1.1" 200 -
+2026-05-15 22:12:30,055 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:30] "GET /api/dashboard/geoip HTTP/1.1" 200 -
+2026-05-15 22:12:30,250 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:30] "GET /api/events?limit=100 HTTP/1.1" 200 -
+2026-05-15 22:12:30,363 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:30] "GET /api/alerts?is_resolved=false&limit=5 HTTP/1.1" 200 -
+2026-05-15 22:12:30,586 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:30] "GET /api/dashboard/brute-force HTTP/1.1" 200 -
+2026-05-15 22:12:30,687 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:30] "GET /api/servers/maintenance HTTP/1.1" 200 -
+2026-05-15 22:12:38,449 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:38] "GET /assets HTTP/1.1" 200 -
+2026-05-15 22:12:38,531 [INFO] securepulse: WebSocket client disconnected: MzmW5LGKJjbVeaqEAAAL
+2026-05-15 22:12:38,760 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:38] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:12:38,852 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:38] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:12:38,854 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:38] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:12:39,204 [INFO] securepulse: WebSocket client connected: NFu1K_PchO8Yy33JAAAN
+2026-05-15 22:12:39,214 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:39] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:12:39,260 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:39] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:12:52,969 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:52] "GET /servers/46 HTTP/1.1" 200 -
+2026-05-15 22:12:53,037 [INFO] securepulse: WebSocket client disconnected: NFu1K_PchO8Yy33JAAAN
+2026-05-15 22:12:53,042 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:53] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:12:53,222 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:53] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:12:53,345 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:53] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:12:53,668 [INFO] securepulse: WebSocket client connected: e7DngOCqg45n-0ENAAAP
+2026-05-15 22:12:53,669 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:12:53] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:13:12,668 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:13:12] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:13:23,677 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:13:23] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:13:53,368 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:13:53] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:14:12,682 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:14:12] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:14:23,678 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:14:23] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:14:46,686 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:14:46] "GET /servers/46 HTTP/1.1" 200 -
+2026-05-15 22:14:46,727 [INFO] securepulse: WebSocket client disconnected: e7DngOCqg45n-0ENAAAP
+2026-05-15 22:14:46,730 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:14:46] "[35m[1mGET /socket.io/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiaWRlbnRpdHkiOiJhZG1pbiIsImlzX2FkbWluIjp0cnVlLCJyb2xlIjoic3VwZXJ1c2VyIiwiZXhwIjoxNzc4OTQ5NzQ1LCJpYXQiOjE3Nzg4NjMzNDV9.AO_M5iyUeWcSF5mvqrtHP_6HghV-KX8yUvPgR0MtSDY&EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2026-05-15 22:14:46,772 [ERROR] werkzeug: Error on request:
+Traceback (most recent call last):
+  File "C:\Users\Test\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Test\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+    ~~~~~^^^^^
+  File "C:\Users\Test\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response
+2026-05-15 22:14:46,988 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:14:46] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:14:47,057 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:14:47] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:14:47,058 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:14:47] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:14:47,390 [INFO] securepulse: WebSocket client connected: H9oM4b9Oiyhvzg_WAAAR
+2026-05-15 22:14:47,393 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:14:47] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:15:03,758 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:15:03] "GET /api/servers/46 HTTP/1.1" 200 -
+2026-05-15 22:15:12,676 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:15:12] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:15:17,409 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:15:17] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:15:47,089 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:15:47] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:16:12,655 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:16:12] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:16:17,396 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:16:17] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:16:47,085 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:16:47] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:17:12,652 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:17:12] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:17:17,382 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:17:17] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:17:33,856 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:17:33] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:17:39,204 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:17:39] "[32mGET /servers HTTP/1.1[0m" 302 -
+2026-05-15 22:17:39,521 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:17:39] "GET /assets HTTP/1.1" 200 -
+2026-05-15 22:17:39,542 [INFO] securepulse: WebSocket client disconnected: H9oM4b9Oiyhvzg_WAAAR
+2026-05-15 22:17:39,853 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:17:39] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:17:39,853 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:17:39] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:17:39,855 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:17:39] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:17:40,113 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:17:40] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:17:40,200 [INFO] securepulse: WebSocket client connected: 8jp2tQXhiiiVCZNwAAAT
+2026-05-15 22:17:40,208 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:17:40] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:17:59,679 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:17:59] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:18:09,909 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:18:09] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:18:29,657 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:18:29] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:18:33,994 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:18:33] "GET /assets HTTP/1.1" 200 -
+2026-05-15 22:18:34,035 [INFO] securepulse: WebSocket client disconnected: 8jp2tQXhiiiVCZNwAAAT
+2026-05-15 22:18:34,039 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:18:34] "[35m[1mGET /socket.io/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiaWRlbnRpdHkiOiJhZG1pbiIsImlzX2FkbWluIjp0cnVlLCJyb2xlIjoic3VwZXJ1c2VyIiwiZXhwIjoxNzc4OTQ5NzQ1LCJpYXQiOjE3Nzg4NjMzNDV9.AO_M5iyUeWcSF5mvqrtHP_6HghV-KX8yUvPgR0MtSDY&EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2026-05-15 22:18:34,040 [ERROR] werkzeug: Error on request:
+Traceback (most recent call last):
+  File "C:\Users\Test\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Test\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+    ~~~~~^^^^^
+  File "C:\Users\Test\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response
+2026-05-15 22:18:34,067 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:18:34] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:18:34,215 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:18:34] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:18:34,377 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:18:34] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:18:34,739 [INFO] securepulse: WebSocket client connected: g1QmqvQC9LOWzoYKAAAV
+2026-05-15 22:18:34,742 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:18:34] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:18:34,753 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:18:34] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:18:59,688 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:18:59] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:19:04,440 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:19:04] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:19:34,759 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:19:34] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:19:39,805 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:19:39] "GET /servers/46 HTTP/1.1" 200 -
+2026-05-15 22:19:39,887 [INFO] securepulse: WebSocket client disconnected: g1QmqvQC9LOWzoYKAAAV
+2026-05-15 22:19:40,110 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:19:40] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:19:40,198 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:19:40] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:19:40,198 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:19:40] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:19:40,536 [INFO] securepulse: WebSocket client connected: WP6fT8Z-WrS98iB_AAAX
+2026-05-15 22:19:40,538 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:19:40] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:19:40,550 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:19:40] "GET /api/servers/46 HTTP/1.1" 200 -
+2026-05-15 22:19:40,803 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:19:40] "GET /api/events?server_id=46&limit=50 HTTP/1.1" 200 -
+2026-05-15 22:19:40,882 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:19:40] "GET /api/alerts?server_id=46&limit=30 HTTP/1.1" 200 -
+2026-05-15 22:20:10,235 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:20:10] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:20:12,677 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:20:12] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:20:40,540 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:20:40] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:21:10,237 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:10] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:21:12,655 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:12] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:21:24,527 [INFO] securepulse: Loaded 17 rules from default_rules.yaml
+2026-05-15 22:21:24,595 [INFO] securepulse: Loaded 17 rules from default_rules.yaml
+2026-05-15 22:21:24,604 [INFO] securepulse: Starting SecurePulse on port 5001 (debug=True)
+2026-05-15 22:21:24,657 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.0.112:5001
+2026-05-15 22:21:24,658 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2026-05-15 22:21:24,658 [INFO] werkzeug:  * Restarting with stat
+2026-05-15 22:21:25,875 [INFO] securepulse: Loaded 17 rules from default_rules.yaml
+2026-05-15 22:21:25,937 [INFO] securepulse: Loaded 17 rules from default_rules.yaml
+2026-05-15 22:21:25,944 [INFO] securepulse: Starting SecurePulse on port 5001 (debug=True)
+2026-05-15 22:21:25,949 [WARNING] werkzeug:  * Debugger is active!
+2026-05-15 22:21:25,950 [INFO] werkzeug:  * Debugger PIN: 818-874-423
+2026-05-15 22:21:25,961 [INFO] securepulse: WebSocket client connected: MxgemClJuc8CwKSjAAAB
+2026-05-15 22:21:26,861 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:26] "[32mGET /logout HTTP/1.1[0m" 302 -
+2026-05-15 22:21:26,882 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:26] "GET /login HTTP/1.1" 200 -
+2026-05-15 22:21:26,913 [INFO] securepulse: WebSocket client disconnected: MxgemClJuc8CwKSjAAAB
+2026-05-15 22:21:26,938 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:26] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:21:26,942 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:26] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:21:29,006 [INFO] securepulse: WebSocket client connected: 7XZ7V17fpheLTwKaAAAD
+2026-05-15 22:21:31,461 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:31] "POST /auth/login HTTP/1.1" 200 -
+2026-05-15 22:21:34,439 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:34] "GET /dashboard?_cb=1778863894383 HTTP/1.1" 200 -
+2026-05-15 22:21:34,463 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:34] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:21:34,465 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:34] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:21:34,510 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:34] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:21:34,532 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:34] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:21:34,559 [INFO] securepulse: WebSocket client connected: g_MoQXssaS3nqKVzAAAF
+2026-05-15 22:21:34,580 [ERROR] securepulse: GeoIP error for 203.0.113.5: name 'requests' is not defined
+2026-05-15 22:21:34,581 [ERROR] securepulse: GeoIP error for 198.51.100.42: name 'requests' is not defined
+2026-05-15 22:21:34,581 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:34] "GET /api/servers/stats HTTP/1.1" 200 -
+2026-05-15 22:21:34,581 [ERROR] securepulse: GeoIP error for 192.168.1.50: name 'requests' is not defined
+2026-05-15 22:21:34,583 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:34] "GET /api/dashboard/geoip HTTP/1.1" 200 -
+2026-05-15 22:21:34,617 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:34] "GET /api/events?limit=100 HTTP/1.1" 200 -
+2026-05-15 22:21:34,649 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:34] "GET /api/alerts?is_resolved=false&limit=5 HTTP/1.1" 200 -
+2026-05-15 22:21:34,665 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:34] "GET /api/dashboard/brute-force HTTP/1.1" 200 -
+2026-05-15 22:21:34,681 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:34] "GET /api/servers/maintenance HTTP/1.1" 200 -
+2026-05-15 22:21:36,392 [INFO] securepulse: WebSocket client disconnected: g_MoQXssaS3nqKVzAAAF
+2026-05-15 22:21:39,199 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:39] "[32mGET /login HTTP/1.1[0m" 302 -
+2026-05-15 22:21:39,236 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:39] "GET /dashboard HTTP/1.1" 200 -
+2026-05-15 22:21:39,268 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:39] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:21:39,272 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:39] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:21:39,273 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:39] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:21:39,292 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:39] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:21:39,312 [INFO] securepulse: WebSocket client connected: xWho-4wR9xkdssq4AAAH
+2026-05-15 22:21:39,316 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:39] "GET /api/dashboard/geoip HTTP/1.1" 200 -
+2026-05-15 22:21:39,316 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:39] "GET /api/servers/stats HTTP/1.1" 200 -
+2026-05-15 22:21:39,336 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:39] "GET /api/events?limit=100 HTTP/1.1" 200 -
+2026-05-15 22:21:39,363 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:39] "GET /api/alerts?is_resolved=false&limit=5 HTTP/1.1" 200 -
+2026-05-15 22:21:39,376 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:39] "GET /api/dashboard/brute-force HTTP/1.1" 200 -
+2026-05-15 22:21:39,389 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:39] "GET /api/servers/maintenance HTTP/1.1" 200 -
+2026-05-15 22:21:40,539 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:40] "GET /assets HTTP/1.1" 200 -
+2026-05-15 22:21:40,546 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:40] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:21:40,562 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:40] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:21:40,563 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:40] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:21:40,565 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:40] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:21:40,599 [INFO] securepulse: WebSocket client disconnected: xWho-4wR9xkdssq4AAAH
+2026-05-15 22:21:40,604 [INFO] securepulse: WebSocket client connected: F93nO7aAk-gTlX5zAAAJ
+2026-05-15 22:21:40,610 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:40] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:21:40,625 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:40] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:21:41,512 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:41] "GET /assets HTTP/1.1" 200 -
+2026-05-15 22:21:41,524 [INFO] securepulse: WebSocket client disconnected: F93nO7aAk-gTlX5zAAAJ
+2026-05-15 22:21:41,542 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:41] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:21:41,552 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:41] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:21:41,553 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:41] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:21:41,577 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:41] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:21:41,577 [INFO] securepulse: WebSocket client connected: m92KqzXHUL82I737AAAL
+2026-05-15 22:21:41,594 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:41] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:21:46,068 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:46] "DELETE /api/servers/46 HTTP/1.1" 200 -
+2026-05-15 22:21:46,096 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:46] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:21:53,948 [INFO] securepulse: UPDATE SERVER 10 RECEIVED DATA: {'maintenance_hours': 3}
+2026-05-15 22:21:53,961 [INFO] securepulse: DB COMMIT SUCCESS for server 10
+2026-05-15 22:21:53,964 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:53] "PATCH /api/servers/10 HTTP/1.1" 200 -
+2026-05-15 22:21:53,985 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:53] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:21:59,178 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:59] "GET /assets HTTP/1.1" 200 -
+2026-05-15 22:21:59,190 [INFO] securepulse: WebSocket client disconnected: m92KqzXHUL82I737AAAL
+2026-05-15 22:21:59,203 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:59] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:21:59,204 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:59] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:21:59,206 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:59] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:21:59,226 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:59] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:21:59,227 [INFO] securepulse: WebSocket client connected: JkGGrkHGaea1nOtcAAAN
+2026-05-15 22:21:59,242 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:59] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:21:59,761 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:59] "GET /maintenance HTTP/1.1" 200 -
+2026-05-15 22:21:59,779 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:59] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:21:59,781 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:59] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:21:59,781 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:59] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:21:59,798 [INFO] securepulse: WebSocket client disconnected: JkGGrkHGaea1nOtcAAAN
+2026-05-15 22:21:59,803 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:21:59] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:21:59,808 [INFO] securepulse: WebSocket client connected: oM_gUFYxIlRRlTkzAAAP
+2026-05-15 22:22:01,258 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:01] "GET /dashboard HTTP/1.1" 200 -
+2026-05-15 22:22:01,274 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:01] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:22:01,276 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:01] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:01,278 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:01] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:01,301 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:01] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:22:01,327 [INFO] securepulse: WebSocket client disconnected: oM_gUFYxIlRRlTkzAAAP
+2026-05-15 22:22:01,330 [INFO] securepulse: WebSocket client connected: Z_jnYmhDgJngI3gnAAAR
+2026-05-15 22:22:01,330 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:01] "GET /api/dashboard/geoip HTTP/1.1" 200 -
+2026-05-15 22:22:01,337 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:01] "GET /api/servers/stats HTTP/1.1" 200 -
+2026-05-15 22:22:01,362 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:01] "GET /api/events?limit=100 HTTP/1.1" 200 -
+2026-05-15 22:22:01,384 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:01] "GET /api/alerts?is_resolved=false&limit=5 HTTP/1.1" 200 -
+2026-05-15 22:22:01,401 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:01] "GET /api/dashboard/brute-force HTTP/1.1" 200 -
+2026-05-15 22:22:01,423 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:01] "GET /api/servers/maintenance HTTP/1.1" 200 -
+2026-05-15 22:22:02,377 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:02] "GET /assets?filter=maintenance HTTP/1.1" 200 -
+2026-05-15 22:22:02,399 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:02] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:22:02,399 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:02] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:02,402 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:02] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:02,432 [INFO] securepulse: WebSocket client disconnected: Z_jnYmhDgJngI3gnAAAR
+2026-05-15 22:22:02,435 [INFO] securepulse: WebSocket client connected: AFtx4FqfW-zXBMQOAAAT
+2026-05-15 22:22:02,436 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:02] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:22:02,449 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:02] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:22:04,924 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:04] "GET /assets HTTP/1.1" 200 -
+2026-05-15 22:22:04,941 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:04] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:22:04,944 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:04] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:04,944 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:04] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:04,965 [INFO] securepulse: WebSocket client disconnected: AFtx4FqfW-zXBMQOAAAT
+2026-05-15 22:22:04,966 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:04] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:22:04,966 [INFO] securepulse: WebSocket client connected: DM8RvzHaM8mF-5IhAAAV
+2026-05-15 22:22:04,979 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:04] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:22:10,233 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:10] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:22:10,640 [INFO] securepulse: UPDATE SERVER 10 RECEIVED DATA: {'maintenance_hours': 2}
+2026-05-15 22:22:10,645 [INFO] securepulse: DB COMMIT SUCCESS for server 10
+2026-05-15 22:22:10,649 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:10] "PATCH /api/servers/10 HTTP/1.1" 200 -
+2026-05-15 22:22:10,669 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:10] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:22:15,028 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:15] "GET /servers/10 HTTP/1.1" 200 -
+2026-05-15 22:22:15,047 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:15] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:22:15,050 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:15] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:15,050 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:15] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:15,072 [INFO] securepulse: WebSocket client disconnected: DM8RvzHaM8mF-5IhAAAV
+2026-05-15 22:22:15,076 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:15] "GET /api/servers/10 HTTP/1.1" 200 -
+2026-05-15 22:22:15,078 [INFO] securepulse: WebSocket client connected: BfzLnNVRAYccyyW3AAAX
+2026-05-15 22:22:15,079 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:15] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:22:15,102 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:15] "GET /api/events?server_id=10&limit=50 HTTP/1.1" 200 -
+2026-05-15 22:22:15,128 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:15] "GET /api/alerts?server_id=10&limit=30 HTTP/1.1" 200 -
+2026-05-15 22:22:24,471 [INFO] securepulse: UPDATE SERVER 10 RECEIVED DATA: {'maintenance_hours': 1}
+2026-05-15 22:22:24,475 [INFO] securepulse: DB COMMIT SUCCESS for server 10
+2026-05-15 22:22:24,478 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:24] "PATCH /api/servers/10 HTTP/1.1" 200 -
+2026-05-15 22:22:24,488 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:24] "GET /api/servers/10 HTTP/1.1" 200 -
+2026-05-15 22:22:24,499 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:24] "GET /api/events?server_id=10&limit=50 HTTP/1.1" 200 -
+2026-05-15 22:22:24,514 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:24] "GET /api/alerts?server_id=10&limit=30 HTTP/1.1" 200 -
+2026-05-15 22:22:27,039 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:27] "GET /maintenance HTTP/1.1" 200 -
+2026-05-15 22:22:27,059 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:27] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:22:27,062 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:27] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:27,063 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:27] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:27,079 [INFO] securepulse: WebSocket client disconnected: BfzLnNVRAYccyyW3AAAX
+2026-05-15 22:22:27,081 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:27] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:22:27,088 [INFO] securepulse: WebSocket client connected: K_DIGOaI3yFcgTXRAAAZ
+2026-05-15 22:22:29,249 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:29] "GET /dashboard HTTP/1.1" 200 -
+2026-05-15 22:22:29,266 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:29] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:22:29,269 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:29] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:29,270 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:29] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:29,298 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:29] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:22:29,318 [INFO] securepulse: WebSocket client disconnected: K_DIGOaI3yFcgTXRAAAZ
+2026-05-15 22:22:29,327 [INFO] securepulse: WebSocket client connected: f_NgFdyXW2Vl1DNIAAAb
+2026-05-15 22:22:29,336 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:29] "GET /api/servers/stats HTTP/1.1" 200 -
+2026-05-15 22:22:29,337 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:29] "GET /api/dashboard/geoip HTTP/1.1" 200 -
+2026-05-15 22:22:29,359 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:29] "GET /api/events?limit=100 HTTP/1.1" 200 -
+2026-05-15 22:22:29,385 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:29] "GET /api/alerts?is_resolved=false&limit=5 HTTP/1.1" 200 -
+2026-05-15 22:22:29,405 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:29] "GET /api/dashboard/brute-force HTTP/1.1" 200 -
+2026-05-15 22:22:29,421 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:29] "GET /api/servers/maintenance HTTP/1.1" 200 -
+2026-05-15 22:22:30,751 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /incidents HTTP/1.1" 200 -
+2026-05-15 22:22:30,770 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:22:30,773 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:30,773 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:30,796 [INFO] securepulse: WebSocket client disconnected: f_NgFdyXW2Vl1DNIAAAb
+2026-05-15 22:22:30,804 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:22:30,811 [INFO] securepulse: WebSocket client connected: spkqnho0yCLHfeJ_AAAd
+2026-05-15 22:22:30,816 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/alerts?limit=100&is_resolved=false HTTP/1.1" 200 -
+2026-05-15 22:22:30,835 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:30,848 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:30,860 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:30,872 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:30,885 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:30,898 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:30,913 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:30,929 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:30,945 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:30,961 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:30,975 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:30,992 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:30] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:31,006 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:31] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:31,019 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:31] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:31,032 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:31] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:31,046 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:31] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:31,061 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:31] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:31,076 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:31] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:31,090 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:31] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:31,103 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:31] "GET /api/cases HTTP/1.1" 200 -
+2026-05-15 22:22:32,179 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:32] "GET /dashboard HTTP/1.1" 200 -
+2026-05-15 22:22:32,195 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:32] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:22:32,198 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:32] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:32,201 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:32] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:32,226 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:32] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:22:32,241 [INFO] securepulse: WebSocket client disconnected: spkqnho0yCLHfeJ_AAAd
+2026-05-15 22:22:32,251 [INFO] securepulse: WebSocket client connected: hE6QPdYY5TA27CwgAAAf
+2026-05-15 22:22:32,259 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:32] "GET /api/servers/stats HTTP/1.1" 200 -
+2026-05-15 22:22:32,261 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:32] "GET /api/dashboard/geoip HTTP/1.1" 200 -
+2026-05-15 22:22:32,287 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:32] "GET /api/events?limit=100 HTTP/1.1" 200 -
+2026-05-15 22:22:32,311 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:32] "GET /api/alerts?is_resolved=false&limit=5 HTTP/1.1" 200 -
+2026-05-15 22:22:32,326 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:32] "GET /api/dashboard/brute-force HTTP/1.1" 200 -
+2026-05-15 22:22:32,343 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:32] "GET /api/servers/maintenance HTTP/1.1" 200 -
+2026-05-15 22:22:33,039 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:33] "GET /assets?filter=maintenance HTTP/1.1" 200 -
+2026-05-15 22:22:33,061 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:33] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:22:33,063 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:33] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:33,063 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:33] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:33,089 [INFO] securepulse: WebSocket client disconnected: hE6QPdYY5TA27CwgAAAf
+2026-05-15 22:22:33,090 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:33] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:22:33,092 [INFO] securepulse: WebSocket client connected: Pzu9XeQeDGSrfKkUAAAh
+2026-05-15 22:22:33,108 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:33] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:22:35,140 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:35] "GET /audit-log HTTP/1.1" 200 -
+2026-05-15 22:22:35,162 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:35] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:22:35,164 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:35] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:35,165 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:35] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:35,181 [INFO] securepulse: WebSocket client disconnected: Pzu9XeQeDGSrfKkUAAAh
+2026-05-15 22:22:35,188 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:35] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:22:35,199 [INFO] securepulse: WebSocket client connected: Q_RyNVhZMOc9MBqOAAAj
+2026-05-15 22:22:35,200 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:35] "GET /api/audit-logs HTTP/1.1" 200 -
+2026-05-15 22:22:36,250 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:36] "GET /settings HTTP/1.1" 200 -
+2026-05-15 22:22:36,268 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:36] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:22:36,270 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:36] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:36,272 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:36] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:22:36,296 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:36] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:22:36,300 [INFO] securepulse: WebSocket client disconnected: Q_RyNVhZMOc9MBqOAAAj
+2026-05-15 22:22:36,306 [INFO] securepulse: WebSocket client connected: SNcK36i6qpxI6gA0AAAl
+2026-05-15 22:22:40,539 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:22:40] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:23:06,305 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:06] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:23:10,242 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:10] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:23:36,652 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:36] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:23:40,541 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:40] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:23:45,155 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "GET /assets HTTP/1.1" 200 -
+2026-05-15 22:23:45,173 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:23:45,176 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:23:45,176 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:23:45,199 [INFO] securepulse: WebSocket client disconnected: SNcK36i6qpxI6gA0AAAl
+2026-05-15 22:23:45,200 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:23:45,209 [INFO] securepulse: WebSocket client connected: fBD0AAH7Bm2ilpjbAAAn
+2026-05-15 22:23:45,220 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "GET /api/servers HTTP/1.1" 200 -
+2026-05-15 22:23:45,781 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "GET /servers/10 HTTP/1.1" 200 -
+2026-05-15 22:23:45,801 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:23:45,803 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:23:45,803 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:23:45,828 [INFO] securepulse: WebSocket client disconnected: fBD0AAH7Bm2ilpjbAAAn
+2026-05-15 22:23:45,835 [INFO] securepulse: WebSocket client connected: IMlQM_BPC0CPkaE5AAAp
+2026-05-15 22:23:45,838 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "GET /api/servers/10 HTTP/1.1" 200 -
+2026-05-15 22:23:45,839 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:23:45,863 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "GET /api/events?server_id=10&limit=50 HTTP/1.1" 200 -
+2026-05-15 22:23:45,887 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:23:45] "GET /api/alerts?server_id=10&limit=30 HTTP/1.1" 200 -
+2026-05-15 22:24:10,229 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:24:10] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:24:16,652 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:24:16] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:24:40,550 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:24:40] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:24:46,652 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:24:46] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:25:10,233 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:10] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:25:16,663 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:16] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:25:24,945 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:24] "GET /settings HTTP/1.1" 200 -
+2026-05-15 22:25:24,998 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:24] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:25:25,187 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:25] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:25:25,313 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:25] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:25:25,674 [INFO] securepulse: WebSocket client connected: JUhDaSpMujMx40hoAAAr
+2026-05-15 22:25:25,681 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:25] "GET /auth/me HTTP/1.1" 200 -
+2026-05-15 22:25:25,684 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:25] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:25:25,956 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:25] "GET /api/settings/notification-routes HTTP/1.1" 200 -
+2026-05-15 22:25:40,246 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:40] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:25:46,666 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:46] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:25:50,207 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:50] "POST /api/settings/notification-routes HTTP/1.1" 200 -
+2026-05-15 22:25:50,450 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:50] "GET /api/settings/notification-routes HTTP/1.1" 200 -
+2026-05-15 22:25:55,373 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:25:55] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:26:10,568 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:26:10] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:26:16,673 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:26:16] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:26:25,377 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:26:25] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:26:40,559 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:26:40] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:26:46,673 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:26:46] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:26:54,728 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:26:54] "GET /settings HTTP/1.1" 200 -
+2026-05-15 22:26:54,773 [INFO] securepulse: WebSocket client disconnected: JUhDaSpMujMx40hoAAAr
+2026-05-15 22:26:54,780 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:26:54] "[35m[1mGET /socket.io/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiaWRlbnRpdHkiOiJhZG1pbiIsImlzX2FkbWluIjp0cnVlLCJyb2xlIjoic3VwZXJ1c2VyIiwiZXhwIjoxNzc4OTQ5NzQ1LCJpYXQiOjE3Nzg4NjMzNDV9.AO_M5iyUeWcSF5mvqrtHP_6HghV-KX8yUvPgR0MtSDY&EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2026-05-15 22:26:54,783 [ERROR] werkzeug: Error on request:
+Traceback (most recent call last):
+  File "C:\Users\Test\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Test\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+    ~~~~~^^^^^
+  File "C:\Users\Test\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response
+2026-05-15 22:26:55,043 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:26:55] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:26:55,113 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:26:55] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:26:55,113 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:26:55] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:26:55,450 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:26:55] "GET /auth/me HTTP/1.1" 200 -
+2026-05-15 22:26:55,450 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:26:55] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:26:55,518 [INFO] securepulse: WebSocket client connected: YRys3dTBrPa7meHbAAAt
+2026-05-15 22:26:55,693 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:26:55] "GET /api/settings/notification-routes HTTP/1.1" 200 -
+2026-05-15 22:27:05,555 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:27:05] "GET /maintenance HTTP/1.1" 200 -
+2026-05-15 22:27:05,620 [INFO] securepulse: WebSocket client disconnected: YRys3dTBrPa7meHbAAAt
+2026-05-15 22:27:05,627 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:27:05] "[35m[1mGET /socket.io/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiaWRlbnRpdHkiOiJhZG1pbiIsImlzX2FkbWluIjp0cnVlLCJyb2xlIjoic3VwZXJ1c2VyIiwiZXhwIjoxNzc4OTQ5NzQ1LCJpYXQiOjE3Nzg4NjMzNDV9.AO_M5iyUeWcSF5mvqrtHP_6HghV-KX8yUvPgR0MtSDY&EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2026-05-15 22:27:05,629 [ERROR] werkzeug: Error on request:
+Traceback (most recent call last):
+  File "C:\Users\Test\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Test\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+    ~~~~~^^^^^
+  File "C:\Users\Test\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response
+2026-05-15 22:27:05,853 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:27:05] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2026-05-15 22:27:05,954 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:27:05] "[36mGET /static/js/realtime.js HTTP/1.1[0m" 304 -
+2026-05-15 22:27:05,954 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:27:05] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-05-15 22:27:06,336 [INFO] securepulse: WebSocket client connected: vq1MmYVMKXBM5guiAAAv
+2026-05-15 22:27:06,339 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:27:06] "GET /api/servers/maintenance HTTP/1.1" 200 -
+2026-05-15 22:27:06,337 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:27:06] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:27:10,243 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:27:10] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:27:36,289 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:27:36] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:27:40,223 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:27:40] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:28:02,787 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:28:02] "GET /api/notifications HTTP/1.1" 200 -
+2026-05-15 22:28:06,290 [INFO] werkzeug: 127.0.0.1 - - [15/May/2026 22:28:06] "GET /api/notifications HTTP/1.1" 200 -

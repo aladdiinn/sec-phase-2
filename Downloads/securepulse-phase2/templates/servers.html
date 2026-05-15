@@ -86,6 +86,106 @@
     </div>
 </div>
 
+<!-- Asset Action Drawer -->
+<div id="asset-drawer-overlay" onclick="closeAssetDrawer()" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:990; backdrop-filter:blur(3px); transition:opacity 0.3s"></div>
+<div id="asset-drawer" class="glass" style="position:fixed; top:0; right:-400px; width:380px; height:100%; background:rgba(15,23,42,0.96); border-left:1px solid var(--border); z-index:991; transition:right 0.3s ease; padding:36px 28px; box-shadow:-15px 0 50px rgba(0,0,0,0.7); display:flex; flex-direction:column">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:35px">
+        <div style="flex:1; min-width:0; padding-right:10px">
+            <h2 id="drawer-hostname" class="card-title" style="font-size:20px; margin-bottom:4px; word-break:break-all; font-family:var(--orb)">SERVER NAME</h2>
+            <p style="font-family:var(--mono); font-size:10px; color:var(--text-muted); letter-spacing:1.5px; text-transform:uppercase; margin:0">SERVER MODULE</p>
+        </div>
+        <button onclick="closeAssetDrawer()" class="btn-glass" style="border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-size:18px; padding:0; cursor:pointer">&times;</button>
+    </div>
+    
+    <div style="display:flex; flex-direction:column; gap:16px; overflow-y:auto; flex:1; padding-right:4px">
+        <!-- Option 1: View Details -->
+        <div onclick="triggerDrawerAction('details')" style="background:rgba(30,41,59,0.4); border:1px solid var(--border); border-radius:var(--radius-md); padding:18px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:15px" class="glass-hover">
+            <div class="stat-icon blue" style="width:38px; height:38px; font-size:16px; flex-shrink:0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            </div>
+            <div>
+                <div style="font-weight:700; color:var(--text-primary); font-size:13px">View Details</div>
+                <div style="font-size:11px; color:var(--text-muted); margin-top:2px">See metrics and information</div>
+            </div>
+        </div>
+        <!-- Option 2: Restart Configuration -->
+        <div onclick="triggerDrawerAction('restart-config')" style="background:rgba(30,41,59,0.4); border:1px solid var(--border); border-radius:var(--radius-md); padding:18px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:15px" class="glass-hover">
+            <div class="stat-icon orange" style="width:38px; height:38px; font-size:16px; flex-shrink:0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </div>
+            <div>
+                <div style="font-weight:700; color:var(--text-primary); font-size:13px">Restart Configuration</div>
+                <div style="font-size:11px; color:var(--text-muted); margin-top:2px">Manage service restart logic</div>
+            </div>
+        </div>
+        <!-- Option 3: Set Maintenance -->
+        <div onclick="triggerDrawerAction('maintenance')" style="background:rgba(30,41,59,0.4); border:1px solid var(--border); border-radius:var(--radius-md); padding:18px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:15px" class="glass-hover">
+            <div class="stat-icon green" style="width:38px; height:38px; font-size:16px; flex-shrink:0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <div>
+                <div style="font-weight:700; color:var(--text-primary); font-size:13px">Set Maintenance</div>
+                <div style="font-size:11px; color:var(--text-muted); margin-top:2px">Schedule maintenance window</div>
+            </div>
+        </div>
+        <!-- Option 4: Delete Asset -->
+        <div onclick="triggerDrawerAction('delete')" style="background:rgba(255,59,92,0.05); border:1px solid rgba(255,59,92,0.2); border-radius:var(--radius-md); padding:18px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:15px" class="glass-hover" onmouseenter="this.style.background='rgba(255,59,92,0.15)'" onmouseleave="this.style.background='rgba(255,59,92,0.05)'">
+            <div class="stat-icon red" style="width:38px; height:38px; font-size:16px; flex-shrink:0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+            </div>
+            <div>
+                <div style="font-weight:700; color:var(--red); font-size:13px">Delete Asset</div>
+                <div style="font-size:11px; color:var(--text-muted); margin-top:2px">Permanently remove server</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Restart Configuration Modal -->
+<div id="restart-overlay" onclick="closeRestartModal()" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1002; backdrop-filter:blur(4px)"></div>
+<div id="restart-modal" class="glass" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); padding:36px; border-radius:var(--radius-lg); z-index:1003; width:620px; max-width:90%; max-height:90vh; overflow-y:auto; box-shadow:0 30px 80px rgba(0,0,0,0.9); border:1px solid var(--border)">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px">
+        <div>
+            <h3 class="card-title" style="margin:0; font-family:var(--orb)">Restart Configuration</h3>
+            <p class="text-sub" style="margin:4px 0 0 0" id="restart-srv-subtitle">Managing services for server</p>
+        </div>
+        <button onclick="closeRestartModal()" class="btn btn-glass" style="padding:4px 10px; min-width:auto">&times;</button>
+    </div>
+    
+    <div style="margin-bottom:24px">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+            <h4 style="color:var(--cyan); font-size:12px; letter-spacing:1px; margin:0; text-transform:uppercase">Managed Services</h4>
+            <button type="button" class="btn btn-primary" style="padding:4px 12px; font-size:11px" onclick="runPlaybookOnActiveServer()">Run Playbook</button>
+        </div>
+        <div id="active-services-list" style="display:flex; flex-direction:column; gap:8px">
+            <div class="center-spinner"><div class="spinner" style="width:20px; height:20px"></div></div>
+        </div>
+    </div>
+    
+    <div style="background:rgba(0,200,255,0.02); border:1px dashed var(--border); padding:18px; border-radius:var(--radius-md)">
+        <p class="text-meta" style="margin-bottom:12px; font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-primary)">Add New Managed Service</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px">
+            <div>
+                <label class="stat-label" style="margin-bottom:4px">SERVICE NAME</label>
+                <input type="text" id="modal-service-name" placeholder="Tomcat-Production" class="glass" style="width:100%; padding:8px 12px; font-size:12px">
+            </div>
+            <div>
+                <label class="stat-label" style="margin-bottom:4px">RUN AS USER</label>
+                <input type="text" id="modal-service-user" placeholder="tomcat" class="glass" style="width:100%; padding:8px 12px; font-size:12px">
+            </div>
+        </div>
+        <div style="margin-bottom:12px">
+            <label class="stat-label" style="margin-bottom:4px">BINARY / DIRECTORY PATH</label>
+            <input type="text" id="modal-service-path" placeholder="/opt/tomcat8" class="glass" style="width:100%; padding:8px 12px; font-size:12px">
+        </div>
+        <div style="margin-bottom:16px">
+            <label class="stat-label" style="margin-bottom:4px">CUSTOM RESTART COMMAND (OPTIONAL)</label>
+            <input type="text" id="modal-service-restart" placeholder="pkill -9 -f tomcat && sudo -u tomcat /opt/tomcat/bin/startup.sh" class="glass mono" style="width:100%; padding:8px 12px; font-size:11px">
+        </div>
+        <button type="button" class="btn btn-ghost" style="width:100%; border-color:var(--cyan); font-size:12px" onclick="addServiceToActiveServer()">+ Add Managed Service</button>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -117,19 +217,16 @@
 
             grid.innerHTML = data.map(s => `
                 <div class="card glass glass-hover fade-in" style="position:relative; display:flex; flex-direction:column">
-                    <!-- Delete button top-right -->
+                    <!-- Card options top-right -->
                     ${window.USER_ROLE !== 'normal' ? `
-                    <button onclick="event.stopPropagation(); openDeleteModal(\${s.id}, '\${s.hostname.replace(/'/g, "\\\\'")}')"
-                        title="Delete server"
-                        style="position:absolute; top:12px; right:12px; background:rgba(255,59,92,0.1); border:1px solid rgba(255,59,92,0.4); color:var(--red); border-radius:5px; padding:4px 8px; cursor:pointer; font-size:10px; font-family:var(--mono); display:flex; align-items:center; gap:5px; z-index:2; transition:background 0.2s"
-                        onmouseenter="this.style.background='rgba(255,59,92,0.25)'"
-                        onmouseleave="this.style.background='rgba(255,59,92,0.1)'">
-                        <svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" fill="none" stroke-width="2">
-                            <polyline points="3 6 5 6 21 6"/>
-                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                    <button onclick="event.stopPropagation(); openAssetDrawer(${s.id}, '${s.hostname.replace(/'/g, "\\'")}')"
+                        title="Options"
+                        style="position:absolute; top:12px; right:12px; background:rgba(255,255,255,0.03); border:1px solid var(--border); color:var(--text); border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:2; transition:background 0.2s"
+                        onmouseenter="this.style.background='rgba(255,255,255,0.1)'"
+                        onmouseleave="this.style.background='rgba(255,255,255,0.03)'">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2.5">
+                            <circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle>
                         </svg>
-                        DEL
                     </button>
                     ` : ''}
 
@@ -212,6 +309,161 @@
     function copySetupCommand() {
         const cmd = document.getElementById('setup-command').innerText;
         navigator.clipboard.writeText(cmd).then(() => showToast('Command copied to clipboard', 'success'));
+    }
+
+    let _activeServerId = null;
+    let _activeHostname = '';
+    let _activeServices = [];
+    
+    function openAssetDrawer(id, hostname) {
+        _activeServerId = id;
+        _activeHostname = hostname;
+        document.getElementById('drawer-hostname').innerText = hostname;
+        
+        const overlay = document.getElementById('asset-drawer-overlay');
+        const drawer = document.getElementById('asset-drawer');
+        overlay.style.display = 'block';
+        setTimeout(() => { overlay.style.opacity = '1'; }, 10);
+        drawer.style.right = '0';
+    }
+    
+    function closeAssetDrawer() {
+        const overlay = document.getElementById('asset-drawer-overlay');
+        const drawer = document.getElementById('asset-drawer');
+        overlay.style.opacity = '0';
+        drawer.style.right = '-400px';
+        setTimeout(() => { overlay.style.display = 'none'; }, 300);
+    }
+    
+    async function triggerDrawerAction(action) {
+        const id = _activeServerId;
+        const hostname = _activeHostname;
+        
+        if (action === 'details') {
+            window.location.href = `/servers/${id}`;
+        } else if (action === 'restart-config') {
+            closeAssetDrawer();
+            openRestartModal(id, hostname);
+        } else if (action === 'maintenance') {
+            closeAssetDrawer();
+            const hours = prompt(`Set Timed Maintenance for ${hostname}\nEnter duration in hours (e.g., 2) or 0 to disable:`, '2');
+            if (hours === null) return;
+            
+            const duration = parseInt(hours, 10);
+            if (isNaN(duration)) return showToast('Invalid duration entered', 'error');
+            
+            try {
+                await apiFetch(`/api/servers/${id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ maintenance_hours: duration })
+                });
+                showToast(duration > 0 ? `Asset ${hostname} entered maintenance (${duration}h)` : `Maintenance disabled for ${hostname}`, 'success');
+                loadServers(); // Refresh badge states
+            } catch (e) {
+                showToast('Failed to set maintenance: ' + e.message, 'error');
+            }
+        } else if (action === 'delete') {
+            closeAssetDrawer();
+            openDeleteModal(id, hostname);
+        }
+    }
+    
+    async function openRestartModal(id, hostname) {
+        document.getElementById('restart-srv-subtitle').innerText = `Managing services for server: ${hostname}`;
+        document.getElementById('restart-overlay').style.display = 'block';
+        document.getElementById('restart-modal').style.display = 'block';
+        
+        const listContainer = document.getElementById('active-services-list');
+        listContainer.innerHTML = '<div class="center-spinner"><div class="spinner" style="width:20px; height:20px"></div></div>';
+        
+        try {
+            const res = await apiFetch(`/api/servers/${id}`);
+            _activeServices = res.managed_services || [];
+            renderModalServices();
+        } catch (e) {
+            listContainer.innerHTML = `<div style="color:var(--red); font-size:12px">Failed to load services: ${e.message}</div>`;
+        }
+    }
+    
+    function closeRestartModal() {
+        document.getElementById('restart-overlay').style.display = 'none';
+        document.getElementById('restart-modal').style.display = 'none';
+    }
+    
+    function renderModalServices() {
+        const list = document.getElementById('active-services-list');
+        if (!_activeServices || _activeServices.length === 0) {
+            list.innerHTML = '<div style="text-align:center; color:var(--text-muted); font-size:12px; font-style:italic; padding:15px">No managed services configured</div>';
+            return;
+        }
+        
+        list.innerHTML = _activeServices.map(s => `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:rgba(30,41,59,0.4); border:1px solid var(--border); border-radius:var(--radius-sm)">
+                <div>
+                    <div class="mono" style="font-size:12px; font-weight:600; color:var(--cyan)">${s.name} <span style="color:var(--text-muted); font-size:10px; font-weight:normal">as ${s.user || 'root'}</span></div>
+                    <div class="mono" style="font-size:10px; color:var(--text-muted); margin-top:2px; word-break:break-all">${s.path}</div>
+                </div>
+                <button type="button" class="btn btn-glass" style="padding:6px; min-width:auto; color:var(--red); border-color:rgba(255,59,92,0.2)" onclick="removeServiceFromActiveServer('${s.name.replace(/'/g, "\\'")}')">
+                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+            </div>
+        `).join('');
+    }
+    
+    async function addServiceToActiveServer() {
+        const id = _activeServerId;
+        const name = document.getElementById('modal-service-name').value.trim();
+        const user = document.getElementById('modal-service-user').value.trim();
+        const path = document.getElementById('modal-service-path').value.trim();
+        const restartCmd = document.getElementById('modal-service-restart').value.trim();
+        
+        if (!name || !user || !path) return showToast('Please fill Service Name, User, and Path', 'warning');
+        
+        try {
+            const res = await apiFetch(`/api/servers/${id}/services`, {
+                method: 'POST',
+                body: JSON.stringify({ name, user, path, restart_cmd: restartCmd })
+            });
+            showToast('Managed service configured', 'success');
+            _activeServices = res.services || [];
+            renderModalServices();
+            
+            // Clear inputs
+            document.getElementById('modal-service-name').value = '';
+            document.getElementById('modal-service-user').value = '';
+            document.getElementById('modal-service-path').value = '';
+            document.getElementById('modal-service-restart').value = '';
+        } catch (e) {
+            alert('Failed to add service: ' + e.message);
+        }
+    }
+    
+    async function removeServiceFromActiveServer(svcName) {
+        if (!confirm(`Delete configurations for service "${svcName}"?`)) return;
+        const id = _activeServerId;
+        try {
+            const res = await apiFetch(`/api/servers/${id}/services/${encodeURIComponent(svcName)}`, {
+                method: 'DELETE'
+            });
+            showToast('Managed service configuration removed', 'success');
+            _activeServices = res.services || [];
+            renderModalServices();
+        } catch (e) {
+            alert('Failed to remove service: ' + e.message);
+        }
+    }
+    
+    async function runPlaybookOnActiveServer() {
+        if (!confirm('Execute standard restart playbook for all configured services now?')) return;
+        const id = _activeServerId;
+        try {
+            showToast('Triggering restart playbook...', 'info');
+            const res = await apiFetch(`/api/servers/${id}/restart-services`, { method: 'POST' });
+            showToast('Restart playbook completed successfully', 'success');
+            console.log('Playbook Run logs:', res.results);
+        } catch (e) {
+            alert('Playbook Execution failed: ' + e.message);
+        }
     }
 
     window.addEventListener('load', loadServers);

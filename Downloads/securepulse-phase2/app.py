@@ -793,6 +793,11 @@ class RuleManager:
                                             is_active=r.get("is_active", True)
                                         )
                                         db.session.add(new_ar)
+                                    else:
+                                        # Sync changes from YAML config to DB
+                                        existing.event_type = r.get("event_type")
+                                        existing.severity = r.get("severity", "warning")
+                                        existing.is_active = r.get("is_active", True)
                                 db.session.commit()
                                 
                     logger.info(f"Loaded {len(data.get('rules', []))} rules from {filename}")
@@ -1575,7 +1580,8 @@ def delete_server(server_id):
     """Permanently remove a server and all its associated events and alerts."""
     server = Server.query.get_or_404(server_id)
     hostname = server.hostname
-    # Cascade: remove related events and alerts
+    # Cascade: remove related events, alerts, and project links
+    ProjectEndpoint.query.filter_by(server_id=server_id).delete()
     Event.query.filter_by(server_id=server_id).delete()
     Alert.query.filter_by(server_id=server_id).delete()
     db.session.delete(server)
@@ -3092,6 +3098,18 @@ def manage_notification_routes():
         "recipient_email": r.recipient_email
     } for r in routes])
 
+
+@app.route("/api/settings/notification-routes/<int:route_id>", methods=["DELETE"])
+@jwt_required
+@require_role(ROLE_SUPERUSER)
+@audit_log_action("Delete Notification Route")
+def delete_notification_route(route_id):
+    route = NotificationRoute.query.get_or_404(route_id)
+    db.session.delete(route)
+    db.session.commit()
+    return jsonify({"message": "Routing rule deleted successfully"})
+
+
 def dispatch_alert_notification(alert):
     """
     Production alert routing and dispatch logic via SMTP.
@@ -3232,13 +3250,6 @@ def send_routed_alert(case_id):
     return jsonify({
         "message": f"Security alert successfully routed to {recipient}",
         "team_email": recipient
-    })
-    if not config: return jsonify({})
-    return jsonify({
-        "provider": config.provider,
-        "base_url": config.base_url,
-        "project_key": config.project_key,
-        "is_enabled": config.is_enabled
     })
 
 @app.route("/api/cases/<int:case_id>/tickets", methods=["POST"])
@@ -3402,8 +3413,8 @@ def seed_default_rules():
          "condition": {"field": "description", "operator": "contains", "value": "/etc/cron"},
          "mitre_tactic": "Persistence", "mitre_technique": "T1053.005",
          "message": "Crontab or cron directory modified - possible persistence mechanism", "is_active": True},
-        {"name": "SUID Binary Created", "event_type": "new_process", "severity": "critical",
-         "condition": {"field": "description", "operator": "contains", "value": "chmod +s"},
+        {"name": "SUID Binary Created", "event_type": "file_change", "severity": "critical",
+         "condition": {"field": "description", "operator": "contains", "value": "SUID BIT PRIVILEGE ESCALATION"},
          "mitre_tactic": "Privilege Escalation", "mitre_technique": "T1548.001",
          "message": "SUID bit set on binary - privilege escalation risk", "is_active": True},
         {"name": "Unauthorized Sudo Usage", "event_type": "new_process", "severity": "warning",
@@ -3442,12 +3453,13 @@ def seed_default_rules():
             with open(rules_path, "r", encoding="utf-8", errors="replace") as f:
                 yaml_data = _yaml.safe_load(f) or {"rules": []}
 
-        existing_names = {r.get("name") for r in yaml_data.get("rules", [])}
-        added = 0
+        yaml_rules_by_name = {r.get("name"): r for r in yaml_data.get("rules", [])}
+        updated_yaml = False
+        
         for rule in DEFAULT_RULES:
-            if rule["name"] not in existing_names:
+            if rule["name"] not in yaml_rules_by_name:
                 yaml_data["rules"].append(rule)
-                added += 1
+                updated_yaml = True
                 # Also sync to DB for playbook linking
                 try:
                     if not AlertRule.query.filter_by(name=rule["name"]).first():
@@ -3458,12 +3470,20 @@ def seed_default_rules():
                         ))
                 except Exception:
                     pass
+            else:
+                # Sync changed defaults (like the SUID rule update) back to yaml
+                existing = yaml_rules_by_name[rule["name"]]
+                if existing.get("event_type") != rule["event_type"] or \
+                   existing.get("condition", {}).get("value") != rule["condition"].get("value"):
+                    existing["event_type"] = rule["event_type"]
+                    existing["condition"] = rule["condition"]
+                    updated_yaml = True
 
-        if added > 0:
+        if updated_yaml:
             with open(rules_path, "w", encoding="utf-8") as f:
                 _yaml.dump(yaml_data, f, default_flow_style=False, allow_unicode=True)
             db.session.commit()
-            logger.info(f"Seeded {added} default detection rules")
+            logger.info("Synced updated detection rules to YAML")
         rule_manager.load_rules()
     except Exception as e:
         db.session.rollback()
