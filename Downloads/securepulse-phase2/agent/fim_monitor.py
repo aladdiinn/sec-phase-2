@@ -98,13 +98,23 @@ def _collect_fim_snapshot(targets: list[str]) -> dict[str, dict]:
         if os.path.isfile(target):
             snapshot[target] = _get_file_metadata(target)
         elif os.path.isdir(target):
-            # For directories, we watch the directory itself and its immediate children
+            # For directories, we watch the directory itself and its children (up to 2 levels)
             snapshot[target] = _get_file_metadata(target)
             try:
                 for fname in os.listdir(target):
                     fpath = os.path.join(target, fname)
                     if os.path.isfile(fpath):
                         snapshot[fpath] = _get_file_metadata(fpath)
+                    elif os.path.isdir(fpath):
+                        # Level 2: Scan inside subdirectories (e.g., .ssh)
+                        snapshot[fpath] = _get_file_metadata(fpath)
+                        try:
+                            for sub_fname in os.listdir(fpath):
+                                sub_fpath = os.path.join(fpath, sub_fname)
+                                if os.path.isfile(sub_fpath):
+                                    snapshot[sub_fpath] = _get_file_metadata(sub_fpath)
+                        except OSError:
+                            continue
             except OSError:
                 continue
     return snapshot

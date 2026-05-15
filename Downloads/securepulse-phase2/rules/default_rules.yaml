@@ -8,7 +8,7 @@ rules:
   mitre_tactic: Privilege Escalation
   mitre_technique: T1548.003
   name: Unauthorized Sudo Usage
-  severity: warning
+  severity: critical
 - condition:
     field: description
     operator: contains
@@ -67,7 +67,7 @@ rules:
     value: nc\s+(-l|-lp|-lvp)
   event_type: new_process
   is_active: true
-  message: Netcat listener started � possible C2 channel
+  message: Netcat listener started possible C2 channel
   mitre_tactic: Execution
   mitre_technique: T1059
   name: Netcat Listener Detected
@@ -78,7 +78,7 @@ rules:
     value: /etc/passwd
   event_type: file_change
   is_active: true
-  message: /etc/passwd file was modified � possible user account manipulation
+  message: /etc/passwd file was modified possible user account manipulation
   mitre_tactic: Persistence
   mitre_technique: T1136
   name: Passwd File Modified
@@ -89,7 +89,7 @@ rules:
     value: authorized_keys
   event_type: file_change
   is_active: true
-  message: SSH authorized_keys file modified � possible backdoor installation
+  message: SSH authorized_keys file modified possible backdoor installation
   mitre_tactic: Persistence
   mitre_technique: T1098.004
   name: SSH Authorized Keys Modified
@@ -98,9 +98,9 @@ rules:
     field: description
     operator: contains
     value: /etc/cron
-  event_type: file_change
+  event_type: cron_change
   is_active: true
-  message: Crontab or cron directory modified � possible persistence mechanism
+  message: Crontab or cron directory modified possible persistence mechanism
   mitre_tactic: Persistence
   mitre_technique: T1053.005
   name: Crontab Modification
@@ -111,10 +111,21 @@ rules:
     value: SUID BIT PRIVILEGE ESCALATION
   event_type: file_change
   is_active: true
-  message: SUID bit set on binary � privilege escalation risk
+  message: SUID bit set on binary privilege escalation risk
   mitre_tactic: Privilege Escalation
   mitre_technique: T1548.001
   name: SUID Binary Created
+  severity: critical
+- condition:
+    field: description
+    operator: contains
+    value: chmod +s
+  event_type: new_process
+  is_active: true
+  message: SUID bit modification detected via chmod - possible privilege escalation
+  mitre_tactic: Privilege Escalation
+  mitre_technique: T1548.001
+  name: SUID Bit Privilege Escalation (chmod)
   severity: critical
 - condition:
     field: description
@@ -126,7 +137,7 @@ rules:
   mitre_tactic: Credential Access
   mitre_technique: T1110
   name: Failed Brute Force Pattern
-  severity: warning
+  severity: critical
 - condition:
     field: description
     operator: contains
@@ -137,29 +148,29 @@ rules:
   mitre_tactic: Discovery
   mitre_technique: T1046
   name: Port Scan Detected
-  severity: warning
+  severity: critical
 - condition:
     field: description
     operator: contains
     value: large_upload
   event_type: network_event
   is_active: true
-  message: Large outbound file transfer detected � possible data exfiltration
+  message: Large outbound file transfer detected possible data exfiltration
   mitre_tactic: Exfiltration
   mitre_technique: T1048
   name: Large File Transfer
-  severity: warning
+  severity: critical
 - condition:
     field: description
     operator: contains
     value: useradd
   event_type: new_process
   is_active: true
-  message: New OS user account created � verify if authorized
+  message: New OS user account created verify if authorized
   mitre_tactic: Persistence
   mitre_technique: T1136.001
   name: New User Account Created
-  severity: warning
+  severity: critical
 - condition:
     field: description
     operator: contains
@@ -170,15 +181,15 @@ rules:
   mitre_tactic: Execution
   mitre_technique: T1072
   name: Package Manager Unusual Usage
-  severity: warning
+  severity: critical
 - condition:
     field: description
     operator: contains
     value: service_stopped
   event_type: service_event
   is_active: true
-  message: Critical service stopped unexpectedly � possible impact or sabotage
+  message: Critical service stopped unexpectedly possible impact or sabotage
   mitre_tactic: Impact
   mitre_technique: T1489
   name: Service Stopped Unexpectedly
-  severity: warning
+  severity: critical

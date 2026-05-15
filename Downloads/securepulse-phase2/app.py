@@ -809,6 +809,9 @@ class RuleManager:
         for rule in self.rules:
             if rule.get("event_type") != event_type:
                 continue
+            
+            if not rule.get("is_active", True):
+                continue
 
             condition = rule.get("condition", {})
             field = condition.get("field")
@@ -905,8 +908,7 @@ class PlaybookRunner:
                     db.session.add(isolation_alert)
                     alert.server.status = "isolated"
                 elif action_type == "notify_email":
-                    # dispatch_alert_notification(alert)
-                    pass
+                    dispatch_alert_notification(alert)
                 elif action_type == "run_health_check":
                     logger.info(f"PLAYBOOK ACTION: Manual health check for {alert.server.hostname}")
                     # Simulate fresh health check result
@@ -990,8 +992,8 @@ class PlaybookRunner:
 # API — EVENTS (agent ingest + dashboard query)
 # ──────────────────────────────────────────────────────────────────────────────
 
-ALERT_TRIGGERS = {"failed_login", "cron_change", "ssh_login", "file_change"}
-CRITICAL_KEYWORDS = ["root", "sudo", "passwd", "/etc/shadow", "chmod 777"]
+ALERT_TRIGGERS = {"failed_login", "cron_change", "ssh_login", "file_change", "network_event", "service_event"}
+CRITICAL_KEYWORDS = ["root", "sudo", "passwd", "/etc/shadow", "chmod 777", "chmod +s"]
 
 # Global caches
 geoip_cache = {}
@@ -1025,7 +1027,8 @@ def ingest_event():
     VALID_TYPES = {
         "login", "logout", "cron_change", "new_process",
         "process_ended", "ssh_login", "failed_login",
-        "file_change", "heartbeat",
+        "file_change", "heartbeat", "network_event", "service_event",
+        "ueba_anomaly", "threat_intel"
     }
     if event_type not in VALID_TYPES:
         return jsonify({"error": f"Invalid event_type. Use one of: {VALID_TYPES}"}), 400
@@ -1107,7 +1110,11 @@ def ingest_event():
 
         if sev in ("critical", "high"):
             dispatch_alert_notification(alert)
-        logger.info(f"Rule triggered: {rule.get('name')} on {server.hostname}")
+        logger.info(f"RULE_TRIGGERED: [{rule.get('name')}] (Severity: {sev}) on {server.hostname}")
+
+    # Log successful ingestion if no critical alerts but event processed
+    if not triggered_rules:
+        logger.debug(f"Event ingested: {event_type} from {server.hostname}")
 
     # --- 2. Threat Intel Lookup ---
     # Check IP in raw_data or description against threat_indicators table
@@ -3112,94 +3119,177 @@ def delete_notification_route(route_id):
 
 def dispatch_alert_notification(alert):
     """
-    Production alert routing and dispatch logic via SMTP.
-    Includes intelligent routing, alert suppression, and deduplication.
+    SOC-Grade alert routing and dispatch logic via SMTP.
+    Includes telemetry extraction, risk assessment, and checklist-based templates.
     """
-    server = alert.server
+    from datetime import datetime, timezone
+    import json
     
-    # A. Suppress if server is in maintenance
-    if server and getattr(server, 'is_maintenance', False):
-        logger.info(f"SUPPRESSED: Alert '{alert.title}' notification suppressed (Server in Maintenance)")
+    server = alert.server
+    if not server:
         return None
 
-    # B. Alert Deduplication hook (Phase 2 - prevent spam)
-    if server and should_suppress_alert(alert.server_id, alert.alert_type, alert.title):
-        logger.info(f"SUPPRESSED: Duplicate alert '{alert.title}' within 5-min deduplication window. Email skipped.")
+    # A. Suppress if server is in maintenance
+    if getattr(server, 'is_maintenance', False):
+        logger.info(f"SUPPRESSED: Alert '{alert.title}' suppressed (Maintenance)")
         return None
-        
+
+    # B. Deduplication (Phase 2)
+    if should_suppress_alert(alert.server_id, alert.alert_type, alert.title):
+        logger.info(f"SUPPRESSED: Duplicate alert '{alert.title}' (Dedupe)")
+        return None
+
+    # C. Routing logic
     recipient = None
-    
-    # 1. Match by Role (e.g. standby -> DB Team)
-    if server and server.role:
+    if server.role:
         route = NotificationRoute.query.filter_by(match_type="role", match_value=server.role).first()
         if route: recipient = route.recipient_email
-        
-    # 2. Match by Site (e.g. Cloud -> Cloud Team)
-    if not recipient and server and server.site:
+    if not recipient and server.site:
         route = NotificationRoute.query.filter_by(match_type="site", match_value=server.site).first()
         if route: recipient = route.recipient_email
-        
-    # 3. Fallback to Default
     if not recipient:
         route = NotificationRoute.query.filter_by(match_type="default").first()
         recipient = route.recipient_email if route else "soc-manager@securepulse.local"
 
-    # C. Dispatch via SMTP
-    logger.info(f"AUTO-DISPATCH: Dispatching SMTP alert for '{alert.title}' to {recipient}")
-    
-    subject = f"[{str(alert.severity).upper()}] SecurePulse Incident - {alert.title}"
+    # D. Data Extraction
+    event = Event.query.get(alert.event_id) if alert.event_id else None
+    raw = {}
+    if event and event.raw_data:
+        try:
+            raw = json.loads(event.raw_data)
+        except: pass
+
+    # E. SLA Calculation
+    sla_text = "N/A"
+    case = Case.query.get(alert.case_id) if alert.case_id else None
+    if case and case.due_at:
+        diff = case.due_at - datetime.now(timezone.utc)
+        if diff.total_seconds() > 0:
+            hours = int(diff.total_seconds() // 3600)
+            mins = int((diff.total_seconds() % 3600) // 60)
+            sla_text = f"{hours}h {mins}m remaining"
+        else:
+            sla_text = "EXPIRED (SLA BREACH)"
+
+    # F. Risk & Actions Logic
+    risk_info = {
+        "file_change": {
+            "risk": "Modification of system files suggests potential privilege escalation, backdoor installation, or unauthorized configuration changes. Direct access to /etc/shadow or /etc/passwd is a critical indicator of credential compromise.",
+            "actions": [
+                "Verify the exact process and user session that initiated the file write.",
+                "Inspect the file contents for new accounts or changed hashes.",
+                "Check auth logs (/var/log/auth.log) for matching timestamps.",
+                "Isolate the host if the change cannot be attributed to a valid Change Request."
+            ]
+        },
+        "new_process": {
+            "risk": "Unexpected processes, especially those involving networking (nc, nmap) or user management (useradd), often indicate active exploitation or post-exploitation activity.",
+            "actions": [
+                "Kill the suspicious process immediately if unauthorized.",
+                "Audit the parent process chain to find the entry point.",
+                "Check for established network connections associated with this PID.",
+                "Review shell history for the responsible user."
+            ]
+        }
+    }.get(alert.alert_type, {
+        "risk": "Anomalous activity detected on a critical host. This may indicate unauthorized access or a configuration violation that weakens the security posture.",
+        "actions": [
+            "Review the full event telemetry in the SecurePulse dashboard.",
+            "Consult the standard runbook for this alert type.",
+            "Contact the server owner to verify planned maintenance.",
+            "Monitor for related alerts from the same source IP."
+        ]
+    })
+
+    # G. Telemetry
+    pid = raw.get("pid") or raw.get("responsible_pid", "N/A")
+    proc_name = raw.get("name") or raw.get("process_name", "N/A")
+    user = raw.get("username") or raw.get("user", "root")
+    parent = raw.get("parent_proc", "N/A")
+
+    # H. Build HTML
+    subject = f"[SECUREPULSE {str(alert.severity).upper()}] - {alert.title} (ID: #{alert.id})"
     base_url = os.getenv("BASE_URL", "http://localhost:5000")
     
     html_body = f"""
     <html>
-    <body style="font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #060f1e; color: #e2e8f0; padding: 20px; margin: 0;">
-        <div style="max-width: 600px; margin: auto; border: 1px solid #1e293b; border-radius: 8px; overflow: hidden; background: #0f172a;">
-            <div style="background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%); padding: 25px; text-align: center;">
-                <h1 style="margin: 0; color: #060f1e; font-size: 22px; letter-spacing: 1px; font-weight: bold; text-transform: uppercase;">SecurePulse SOC Alert</h1>
+    <head>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap');
+            body {{ font-family: 'Inter', sans-serif; background-color: #020617; color: #94a3b8; padding: 0; margin: 0; line-height: 1.5; }}
+            .container {{ max-width: 700px; margin: 20px auto; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4); }}
+            .header {{ background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); padding: 30px; text-align: center; color: #ffffff; }}
+            .header h1 {{ margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }}
+            .banner {{ background: #1e293b; padding: 12px 20px; border-bottom: 1px solid #334155; display: flex; align-items: center; justify-content: space-between; }}
+            .severity {{ font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 4px; color: #fff; background: {'#ef4444' if str(alert.severity).lower() == 'critical' else '#f59e0b'}; }}
+            .content {{ padding: 30px; }}
+            .section-title {{ font-family: 'JetBrains Mono', monospace; color: #38bdf8; font-size: 13px; font-weight: bold; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 15px; text-transform: uppercase; }}
+            .grid {{ display: table; width: 100%; border-collapse: collapse; margin-bottom: 25px; }}
+            .grid-row {{ display: table-row; }}
+            .grid-cell {{ display: table-cell; padding: 8px 0; border-bottom: 1px solid #1e293b; vertical-align: top; }}
+            .label {{ font-size: 12px; font-weight: 600; color: #64748b; width: 35%; }}
+            .value {{ font-size: 13px; color: #e2e8f0; font-family: 'JetBrains Mono', monospace; }}
+            .risk-box {{ background: #1e293b; border-radius: 8px; padding: 15px; margin-bottom: 25px; color: #cbd5e1; font-size: 13px; border-left: 4px solid #38bdf8; }}
+            .checklist {{ list-style: none; padding: 0; margin: 0; }}
+            .checklist-item {{ display: block; padding: 6px 0; font-size: 13px; color: #e2e8f0; }}
+            .checklist-item b {{ color: #64748b; margin-right: 8px; }}
+            .footer {{ background: #020617; padding: 20px; text-align: center; border-top: 1px solid #1e293b; }}
+            .btn {{ display: inline-block; padding: 12px 24px; background: #3b82f6; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 700; font-size: 14px; margin: 10px 5px; }}
+            .btn-alt {{ background: transparent; border: 1px solid #3b82f6; color: #3b82f6; }}
+            .highlight {{ color: #f43f5e; font-weight: bold; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🚨 SecurePulse SOC Alert</h1>
             </div>
-            <div style="padding: 30px;">
-                <div style="margin-bottom: 20px;">
-                    <span style="font-size: 11px; font-weight: bold; padding: 5px 12px; border-radius: 4px; background: {'#dc2626' if str(alert.severity).lower() == 'critical' else '#d97706'}; color: #ffffff; text-transform: uppercase; font-family: monospace;">{alert.severity} SEVERITY</span>
-                    <span style="margin-left: 10px; font-size: 12px; color: #94a3b8; font-family: monospace;">ID: #{alert.id}</span>
+            <div class="banner">
+                <span class="severity">{alert.severity.upper()} SEVERITY {"(AUTO-ESCALATED)" if alert.auto_promoted else ""}</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px;">ID: #{alert.id}</span>
+            </div>
+            <div class="content">
+                <div class="section-title">Alert Overview</div>
+                <div class="grid">
+                    <div class="grid-row"><div class="grid-cell label">Incident Score</div><div class="grid-cell value highlight">{alert.score}/100</div></div>
+                    <div class="grid-row"><div class="grid-cell label">Alert Type</div><div class="grid-cell value">{alert.alert_type.replace('_', ' ').capitalize()}</div></div>
+                    <div class="grid-row"><div class="grid-cell label">SLA Status</div><div class="grid-cell value" style="color: #fbbf24;">{sla_text}</div></div>
+                    <div class="grid-row"><div class="grid-cell label">Target Host</div><div class="grid-cell value">{server.hostname}</div></div>
+                    <div class="grid-row"><div class="grid-cell label">Timestamp</div><div class="grid-cell value">{alert.created_at.strftime('%d/%m/%Y, %H:%M:%S')} UTC</div></div>
                 </div>
-                <h2 style="color: #ffffff; font-size: 18px; margin-top: 0; margin-bottom: 12px;">{alert.title}</h2>
-                <p style="color: #cbd5e1; line-height: 1.6; font-size: 14px; margin-bottom: 25px;">{alert.message}</p>
-                
-                <table style="width: 100%; margin-bottom: 30px; border-collapse: collapse; background: #1e293b; border-radius: 4px; overflow: hidden;">
-                    <tr style="border-bottom: 1px solid #334155;">
-                        <td style="padding: 12px; font-size: 12px; color: #94a3b8; font-weight: bold; width: 35%;">Hostname</td>
-                        <td style="padding: 12px; font-size: 13px; color: #ffffff; font-family: monospace;">{server.hostname if server else 'Unregistered System'}</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #334155;">
-                        <td style="padding: 12px; font-size: 12px; color: #94a3b8; font-weight: bold;">IP Address</td>
-                        <td style="padding: 12px; font-size: 13px; color: #ffffff; font-family: monospace;">{getattr(server, 'ip_address', 'N/A') or 'N/A'}</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #334155;">
-                        <td style="padding: 12px; font-size: 12px; color: #94a3b8; font-weight: bold;">Alert Type</td>
-                        <td style="padding: 12px; font-size: 13px; color: #e2e8f0; text-transform: capitalize;">{str(alert.alert_type).replace('_', ' ')}</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 12px; font-size: 12px; color: #94a3b8; font-weight: bold;">Incident Score</td>
-                        <td style="padding: 12px; font-size: 13px; color: #f43f5e; font-weight: bold; font-family: monospace;">{getattr(alert, 'score', 0)} / 100</td>
-                    </tr>
-                </table>
-                
-                <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
-                    <a href="{base_url}/alerts" style="display: inline-block; background: #3b82f6; color: #ffffff; font-weight: bold; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-size: 14px;">Launch Investigation Console</a>
+
+                <div class="section-title">Violation Details</div>
+                <div class="risk-box">
+                    <p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #fff;">{alert.message}</p>
+                </div>
+
+                <div class="section-title">Correlated Telemetry</div>
+                <div class="grid">
+                    <div class="grid-row"><div class="grid-cell label">Responsible PID</div><div class="grid-cell value">{pid}</div></div>
+                    <div class="grid-row"><div class="grid-cell label">Process Name</div><div class="grid-cell value">{proc_name}</div></div>
+                    <div class="grid-row"><div class="grid-cell label">Executed By</div><div class="grid-cell value">{user} (UID: {raw.get('uid', '0')})</div></div>
+                    <div class="grid-row"><div class="grid-cell label">Parent Chain</div><div class="grid-cell value">{parent}</div></div>
+                </div>
+
+                <div class="section-title">Risk Assessment</div>
+                <p style="font-size: 13px; margin-top: 0;">{risk_info['risk']}</p>
+
+                <div class="section-title">Immediate Response Actions</div>
+                <div class="checklist">
+                    {" ".join([f'<div class="checklist-item"><b>[ ]</b> {action}</div>' for action in risk_info['actions']])}
                 </div>
             </div>
-            <div style="background: #020617; padding: 15px; text-align: center; font-size: 11px; color: #64748b; border-top: 1px solid #1e293b;">
-                This is an automated operational intelligence notice.<br>
-                Suppression: Identical alerts throttled for 5 minutes.
+            <div class="footer">
+                <a href="{base_url}/alerts" class="btn">Launch Investigation Console</a>
+                <a href="{base_url}/playbooks" class="btn btn-alt">View Isolation Runbook</a>
+                <p style="font-size: 10px; color: #475569; margin-top: 15px;">Automated Security Dispatch &bull; Identical alerts throttled for 5 min &bull; securepulse.io</p>
             </div>
         </div>
     </body>
     </html>
     """
     
-    # Dispatch asynchronously or synchronous inline helper
     send_smtp_email_direct(recipient, subject, html_body)
-
     return recipient
 
 def send_smtp_email_direct(recipient, subject, html_content):
@@ -3409,7 +3499,7 @@ def seed_default_rules():
          "condition": {"field": "description", "operator": "contains", "value": "authorized_keys"},
          "mitre_tactic": "Persistence", "mitre_technique": "T1098.004",
          "message": "SSH authorized_keys file modified - possible backdoor installation", "is_active": True},
-        {"name": "Crontab Modification", "event_type": "file_change", "severity": "critical",
+        {"name": "Crontab Modification", "event_type": "cron_change", "severity": "critical",
          "condition": {"field": "description", "operator": "contains", "value": "/etc/cron"},
          "mitre_tactic": "Persistence", "mitre_technique": "T1053.005",
          "message": "Crontab or cron directory modified - possible persistence mechanism", "is_active": True},
@@ -3417,31 +3507,35 @@ def seed_default_rules():
          "condition": {"field": "description", "operator": "contains", "value": "SUID BIT PRIVILEGE ESCALATION"},
          "mitre_tactic": "Privilege Escalation", "mitre_technique": "T1548.001",
          "message": "SUID bit set on binary - privilege escalation risk", "is_active": True},
-        {"name": "Unauthorized Sudo Usage", "event_type": "new_process", "severity": "warning",
+        {"name": "SUID Bit Privilege Escalation (chmod)", "event_type": "new_process", "severity": "critical",
+         "condition": {"field": "description", "operator": "contains", "value": "chmod +s"},
+         "mitre_tactic": "Privilege Escalation", "mitre_technique": "T1548.001",
+         "message": "SUID bit modification detected via chmod - possible privilege escalation", "is_active": True},
+        {"name": "Unauthorized Sudo Usage", "event_type": "new_process", "severity": "critical",
          "condition": {"field": "description", "operator": "contains", "value": "sudo"},
          "mitre_tactic": "Privilege Escalation", "mitre_technique": "T1548.003",
          "message": "Sudo command executed - verify if authorized", "is_active": True},
-        {"name": "Failed Brute Force Pattern", "event_type": "failed_login", "severity": "warning",
+        {"name": "Failed Brute Force Pattern", "event_type": "failed_login", "severity": "critical",
          "condition": {"field": "description", "operator": "contains", "value": "Failed pwd"},
          "mitre_tactic": "Credential Access", "mitre_technique": "T1110",
          "message": "Multiple failed password attempts detected", "is_active": True},
-        {"name": "Port Scan Detected", "event_type": "network_event", "severity": "warning",
+        {"name": "Port Scan Detected", "event_type": "network_event", "severity": "critical",
          "condition": {"field": "description", "operator": "contains", "value": "port_scan"},
          "mitre_tactic": "Discovery", "mitre_technique": "T1046",
          "message": "Port scanning activity detected from external source", "is_active": True},
-        {"name": "Large File Transfer", "event_type": "network_event", "severity": "warning",
+        {"name": "Large File Transfer", "event_type": "network_event", "severity": "critical",
          "condition": {"field": "description", "operator": "contains", "value": "large_upload"},
          "mitre_tactic": "Exfiltration", "mitre_technique": "T1048",
          "message": "Large outbound file transfer detected - possible data exfiltration", "is_active": True},
-        {"name": "New User Account Created", "event_type": "new_process", "severity": "warning",
+        {"name": "New User Account Created", "event_type": "new_process", "severity": "critical",
          "condition": {"field": "description", "operator": "contains", "value": "useradd"},
          "mitre_tactic": "Persistence", "mitre_technique": "T1136.001",
          "message": "New OS user account created - verify if authorized", "is_active": True},
-        {"name": "Package Manager Unusual Usage", "event_type": "new_process", "severity": "warning",
+        {"name": "Package Manager Unusual Usage", "event_type": "new_process", "severity": "critical",
          "condition": {"field": "description", "operator": "contains", "value": "apt-get install"},
          "mitre_tactic": "Execution", "mitre_technique": "T1072",
          "message": "Software installation via apt-get detected outside maintenance window", "is_active": True},
-        {"name": "Service Stopped Unexpectedly", "event_type": "service_event", "severity": "warning",
+        {"name": "Service Stopped Unexpectedly", "event_type": "service_event", "severity": "critical",
          "condition": {"field": "description", "operator": "contains", "value": "service_stopped"},
          "mitre_tactic": "Impact", "mitre_technique": "T1489",
          "message": "Critical service stopped unexpectedly - possible impact or sabotage", "is_active": True},
@@ -3470,13 +3564,16 @@ def seed_default_rules():
                         ))
                 except Exception:
                     pass
-            else:
-                # Sync changed defaults (like the SUID rule update) back to yaml
+                # Sync changed defaults back to yaml
                 existing = yaml_rules_by_name[rule["name"]]
                 if existing.get("event_type") != rule["event_type"] or \
-                   existing.get("condition", {}).get("value") != rule["condition"].get("value"):
+                   existing.get("condition", {}).get("value") != rule["condition"].get("value") or \
+                   existing.get("severity") != rule["severity"] or \
+                   existing.get("is_active") != rule.get("is_active", True):
                     existing["event_type"] = rule["event_type"]
                     existing["condition"] = rule["condition"]
+                    existing["severity"] = rule["severity"]
+                    existing["is_active"] = rule.get("is_active", True)
                     updated_yaml = True
 
         if updated_yaml:
